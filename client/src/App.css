@@ -1,0 +1,450 @@
+:root {
+    --marron:#563522;
+    --marron-claro:#a8754d;
+    --naranja:#c86b3c;
+    --crema:#f7f2eb;
+    --blanco:#fff;
+    --texto:#29231f;
+    --gris:#706861;
+    --borde:#ded5cc;
+}
+
+* { box-sizing:border-box; }
+
+html { scroll-behavior:smooth; }
+
+body {
+    min-width:320px;
+    margin:0;
+    background:var(--crema);
+    color:var(--texto);
+    font:1rem/1.6 Georgia,"Times New Roman",serif;
+}
+
+img { display:block; max-width:100%; }
+a { color:inherit; }
+h1,h2,h3 { line-height:1.1; }
+
+.encabezado {
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:1rem;
+    padding:1rem;
+    background:var(--blanco);
+    border-bottom:1px solid var(--borde);
+}
+
+.encabezado img {
+    width:180px;
+    height:60px;
+    object-fit:contain;
+}
+
+.navegacion {
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:.8rem 1.2rem;
+    margin:0;
+    padding:0;
+    list-style:none;
+    font:.9rem Arial,sans-serif;
+}
+
+.navegacion a { text-decoration:none; }
+
+.navegacion a:hover,
+.navegacion a:focus { color:var(--naranja); }
+
+.navegacion span {
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    min-width:1.4rem;
+    min-height:1.4rem;
+    border-radius:50%;
+    background:var(--naranja);
+    color:var(--blanco);
+    font-size:.75rem;
+}
+
+.hero {
+    min-height:70vh;
+    display:flex;
+    align-items:flex-end;
+    padding:2rem 1rem;
+    color:var(--blanco);
+    background:
+        linear-gradient(90deg,rgba(40,25,15,.85),rgba(40,25,15,.2)),
+       /* url("/Kit de imágenes/Sofá Patagonia.png") center/cover; */
+}
+
+.hero-contenido { width:min(100%,650px); }
+
+.hero h1 {
+    margin:.5rem 0 1rem;
+    font-size:clamp(2.5rem,9vw,5rem);
+}
+
+.hero p { max-width:550px; font-size:1.1rem; }
+
+.etiqueta {
+    margin:0;
+    color:var(--naranja);
+    font:bold .75rem Arial,sans-serif;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+}
+
+.hero .etiqueta { color:#f5c39f; }
+
+.boton {
+    display:inline-block;
+    padding:.8rem 1.2rem;
+    background:var(--naranja);
+    color:var(--blanco);
+    border:0;
+    font:bold 1rem Arial,sans-serif;
+    text-decoration:none;
+    cursor:pointer;
+}
+
+.boton:hover,
+.boton:focus { background:var(--marron); }
+
+.seccion-nosotros,
+.seccion-productos,
+.seccion-contacto,
+.detalle-producto {
+    width:min(calc(100% - 2rem),1180px);
+    margin:auto;
+    padding:4rem 0;
+}
+
+.seccion-nosotros {
+    max-width:760px;
+    text-align:center;
+}
+
+.seccion-nosotros h2,
+.seccion-productos h1,
+.seccion-productos>h2,
+.seccion-contacto h1,
+.detalle-producto h1,
+.producto-detalle h2 {
+    color:var(--marron);
+}
+
+.seccion-nosotros h2,
+.seccion-productos h1,
+.seccion-productos>h2,
+.seccion-contacto h1 {
+    margin:.5rem 0 1.5rem;
+    font-size:clamp(2rem,6vw,4rem);
+}
+
+.grilla-productos {
+    display:grid;
+    grid-template-columns:1fr;
+    gap:1.25rem;
+}
+
+.tarjeta-mueble {
+    overflow:hidden;
+    background:var(--blanco);
+    border:1px solid var(--borde);
+}
+
+.tarjeta-mueble img {
+    width:100%;
+    aspect-ratio:4/3;
+    object-fit:cover;
+}
+
+.tarjeta-mueble figure { margin:0; }
+
+.tarjeta-mueble figcaption {
+    padding:.6rem 1.25rem;
+    color:var(--gris);
+    font:.85rem Arial,sans-serif;
+}
+
+.contenido-tarjeta { padding:1.25rem; }
+
+.contenido-tarjeta h2,
+.contenido-tarjeta h3 {
+    margin:0 0 .6rem;
+    color:var(--marron);
+    font-size:1.4rem;
+}
+
+.contenido-tarjeta p {
+    margin:0 0 .7rem;
+    color:var(--gris);
+    font:.95rem Arial,sans-serif;
+}
+
+.formulario-busqueda,
+.formulario-contacto {
+    display:flex;
+    flex-direction:column;
+    gap:.7rem;
+    max-width:650px;
+    margin-bottom:2rem;
+}
+
+.formulario-busqueda label,
+.formulario-contacto label {
+    color:var(--marron);
+    font:bold 1rem Arial,sans-serif;
+}
+
+.formulario-busqueda input,
+.formulario-contacto input,
+.formulario-contacto textarea {
+    width:100%;
+    padding:.8rem;
+    border:1px solid var(--borde);
+    background:var(--blanco);
+    color:var(--texto);
+    font:inherit;
+}
+
+.formulario-busqueda input:focus,
+.formulario-contacto input:focus,
+.formulario-contacto textarea:focus {
+    outline:2px solid var(--naranja);
+    border-color:var(--naranja);
+}
+
+.detalle-producto,
+.producto-detalle {
+    display:flex;
+    flex-direction:column;
+    gap:2rem;
+}
+
+.detalle-producto>img,
+.producto-detalle>img {
+    width:100%;
+    object-fit:cover;
+}
+
+.detalle-producto h1,
+.producto-detalle h2 {
+    margin:.5rem 0 1rem;
+    font-size:clamp(2rem,6vw,4rem);
+}
+
+.detalle-producto h2,
+.producto-detalle h3 {
+    margin-top:2rem;
+}
+
+.producto-detalle {
+    padding:2rem 0;
+    border-bottom:1px solid var(--borde);
+}
+
+.producto-detalle:last-child { border:0; }
+
+.producto-detalle>img { max-height:500px; }
+
+.producto-detalle ul { padding-left:1.2rem; }
+.producto-detalle li { margin-bottom:.5rem; }
+
+.precio {
+    color:var(--marron);
+    font-size:1.3rem;
+}
+
+.mensaje-exito {
+    padding:.8rem;
+    background:#e1f1df;
+    color:#245b2a;
+    font-family:Arial,sans-serif;
+}
+
+.mensaje-error {
+    padding:.8rem;
+    background:#fbe4e0;
+    color:#8a2f22;
+    font-family:Arial,sans-serif;
+}
+
+.cargando,
+.sin-resultados {
+    grid-column:1/-1;
+    padding:2rem 0;
+    color:var(--gris);
+    font:1rem Arial,sans-serif;
+    text-align:center;
+}
+
+.contenido-carrito {
+    display:flex;
+    flex-direction:column;
+    gap:1rem;
+    max-width:800px;
+}
+
+.fila-carrito {
+    display:flex;
+    align-items:center;
+    gap:1rem;
+    padding:1rem;
+    background:var(--blanco);
+    border:1px solid var(--borde);
+}
+
+.fila-carrito img {
+    width:90px;
+    height:90px;
+    object-fit:cover;
+    flex-shrink:0;
+}
+
+.fila-carrito-info { flex:1; }
+
+.fila-carrito-info h2 {
+    margin:0 0 .3rem;
+    color:var(--marron);
+    font-size:1.1rem;
+}
+
+.fila-carrito-info p {
+    margin:0;
+    color:var(--gris);
+    font:.9rem Arial,sans-serif;
+}
+
+.resumen-carrito {
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    justify-content:space-between;
+    gap:1rem;
+    padding:1rem 0;
+}
+
+.pie {
+    display:flex;
+    flex-direction:column;
+    gap:1rem;
+    padding:2rem 1rem;
+    background:var(--marron);
+    color:var(--blanco);
+    font-family:Arial,sans-serif;
+}
+
+.pie p { margin:.25rem 0; }
+.pie address { font-style:normal; }
+
+@media (min-width:700px) {
+    .encabezado {
+        flex-direction:row;
+        justify-content:space-between;
+        padding:1rem 4rem;
+    }
+
+    .hero { min-height:78vh; padding:4rem; }
+
+    .seccion-nosotros,
+    .seccion-productos,
+    .seccion-contacto,
+    .detalle-producto {
+        width:min(calc(100% - 4rem),1180px);
+    }
+
+    .grilla-productos { grid-template-columns:repeat(2,1fr); }
+
+    .formulario-busqueda {
+        flex-direction:row;
+        align-items:flex-end;
+    }
+
+    .formulario-busqueda input { flex:1; }
+
+    .producto-detalle {
+        flex-direction:row;
+        align-items:center;
+        gap:4rem;
+    }
+
+    .producto-detalle>img,
+    .producto-detalle section { flex:1; }
+
+    .pie {
+        flex-direction:row;
+        justify-content:space-between;
+        padding:3rem 4rem;
+    }
+}
+
+@media (min-width:1000px) {
+    .grilla-productos {
+        grid-template-columns:repeat(4,1fr);
+    }
+}
+
+
+
+.boton,
+.tarjeta-mueble,
+.tarjeta-mueble img,
+.navegacion a,
+.formulario-contacto input,
+.formulario-contacto textarea {
+    transition: all 0.3s ease-in-out;
+}
+.boton:hover,
+.boton:focus {
+    background: var(--marron);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(86, 53, 34, 0.25); 
+}
+.tarjeta-mueble:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 24px rgba(86, 53, 34, 0.12);
+    border-color: var(--marron-claro);
+}
+.tarjeta-mueble:hover img {
+    transform: scale(1.05);
+}
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+.tarjeta-mueble {
+    animation: fadeInUp 0.6s ease-out forwards;
+}
+
+  
+.boton-volver {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--gris);
+    text-decoration: none;
+    font-family: Arial, sans-serif;
+    font-size: 0.95rem;
+    font-weight: 500;
+    margin-bottom: 1.5rem;
+}
+
+.boton-volver:hover {
+    color: var(--naranja);
+    text-decoration: underline;
+}
+.acciones {
+    display: flex;
+    gap: 10px; 
+    align-items: center;
+}
