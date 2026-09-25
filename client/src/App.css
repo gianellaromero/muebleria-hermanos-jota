@@ -78,7 +78,7 @@ h1,h2,h3 { line-height:1.1; }
     color:var(--blanco);
     background:
         linear-gradient(90deg,rgba(40,25,15,.85),rgba(40,25,15,.2)),
-       /* url("/Kit de imágenes/Sofá Patagonia.png") center/cover; */
+       /* url("/img/sofa-patagonia.png") center/cover; */
 }
 
 .hero-contenido { width:min(100%,650px); }

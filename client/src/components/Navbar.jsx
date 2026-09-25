@@ -17,7 +17,7 @@ export default function Navbar({ contadorCarrito, onNavegar }) {
   return (
     <header className="encabezado">
       <a href="#inicio" aria-label="Ir al inicio" onClick={(e) => handleClick(e, 'inicio')}>
-        <img src="/Kit de imágenes/logo.svg" alt="Logo de Mueblería Hermanos Jota" width="180" height="60" />
+        <img src="/img/logo.svg" alt="Logo de Mueblería Hermanos Jota" width="180" height="60" />
       </a>
       <nav aria-label="Navegación principal">
         <ul className="navegacion">
