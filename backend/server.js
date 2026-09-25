@@ -27,9 +27,14 @@ app.use((req, res) => {
 // error handler
 app.use(errorHandler);
 
-// levantar servidor
-const PORT = 3000;
+// levantar servidor (3001 para no chocar con React, que usa el 3000)
+const PORT = process.env.PORT || 3001;
 
-app.listen(PORT, () => {
+app.listen(PORT, (error) => {
+  // En Express 5, si el puerto está ocupado el error llega a este callback
+  if (error) {
+    console.error(`No se pudo iniciar el servidor en el puerto ${PORT}: ${error.message}`);
+    process.exit(1);
+  }
   console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });

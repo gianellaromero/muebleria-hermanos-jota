@@ -1,11 +1,12 @@
 const errorHandler = (err, req, res, next) => {
   console.error("Error:", err.message);
 
-  const status = err.statusCode || 500;
+  const status = err.statusCode || err.status || 500;
 
+  // Mismo formato que el resto de la API: { error: "mensaje" }.
+  // En errores 500 no se expone el detalle interno al cliente.
   res.status(status).json({
-    error: true,
-    message: err.message || "Error interno del servidor"
+    error: status < 500 ? err.message : "Error interno del servidor"
   });
 };
 
