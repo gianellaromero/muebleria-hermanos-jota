@@ -45,6 +45,7 @@ h1,h2,h3 { line-height:1.1; }
     display:flex;
     flex-wrap:wrap;
     justify-content:center;
+    align-items:center;
     gap:.8rem 1.2rem;
     margin:0;
     padding:0;
@@ -57,7 +58,7 @@ h1,h2,h3 { line-height:1.1; }
 .navegacion a:hover,
 .navegacion a:focus { color:var(--naranja); }
 
-.navegacion span {
+.contador-carrito {
     display:inline-flex;
     align-items:center;
     justify-content:center;
@@ -130,16 +131,16 @@ h1,h2,h3 { line-height:1.1; }
 .seccion-nosotros h2,
 .seccion-productos h1,
 .seccion-productos>h2,
-.seccion-contacto h1,
+.seccion-contacto h2,
 .detalle-producto h1,
-.producto-detalle h2 {
+.producto-detalle h1 {
     color:var(--marron);
 }
 
 .seccion-nosotros h2,
 .seccion-productos h1,
 .seccion-productos>h2,
-.seccion-contacto h1 {
+.seccion-contacto h2 {
     margin:.5rem 0 1.5rem;
     font-size:clamp(2rem,6vw,4rem);
 }
@@ -232,13 +233,13 @@ h1,h2,h3 { line-height:1.1; }
 }
 
 .detalle-producto h1,
-.producto-detalle h2 {
+.producto-detalle h1 {
     margin:.5rem 0 1rem;
     font-size:clamp(2rem,6vw,4rem);
 }
 
 .detalle-producto h2,
-.producto-detalle h3 {
+.producto-detalle h2 {
     margin-top:2rem;
 }
 
@@ -447,4 +448,31 @@ h1,h2,h3 { line-height:1.1; }
     display: flex;
     gap: 10px; 
     align-items: center;
+}
+
+/* Sprint 3: botón volver del detalle (es un <button>, no un link) */
+button.boton-volver {
+    padding: 0;
+    background: none;
+    border: 0;
+    cursor: pointer;
+}
+
+/* Sprint 3: contador de caracteres del formulario de contacto */
+.contador-caracteres {
+    display: block;
+    margin-top: .3rem;
+    color: var(--gris);
+    font: .8rem Arial, sans-serif;
+}
+
+.formulario-contacto [aria-invalid="true"] {
+    border-color: #8a2f22;
+}
+
+/* Carrito del nav: ícono, texto y contador alineados en una misma línea */
+.nav-carrito {
+    display: inline-flex;
+    align-items: center;
+    gap: .35rem;
 }

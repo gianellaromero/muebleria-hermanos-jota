@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function ProductCard({ producto }) {
+export default function ProductCard({ producto, onVerDetalle }) {
   return (
     <article className="tarjeta-mueble">
       <figure>
@@ -8,10 +8,10 @@ export default function ProductCard({ producto }) {
         <figcaption>{producto.categoria}</figcaption>
       </figure>
       <div className="contenido-tarjeta">
-        <h3>{producto.nombre}</h3>
+        <h2>{producto.nombre}</h2>
         <p>{producto.descripcionCorta}</p>
         <p className="precio">${producto.precio.toLocaleString()}</p>
-        <button className="boton">Ver detalle</button>
+        <button className="boton" type="button" onClick={() => onVerDetalle(producto)}>Ver detalle</button>
       </div>
     </article>
   );
