@@ -1,10 +1,11 @@
 const express = require("express");
 const app = express();
-
+const cors = require('cors');
 const productosRoutes = require("./routes/productos");
 const logger = require("./middlewares/logger");
 const errorHandler = require("./middlewares/errorHandler");
-
+// cors
+ app.use(cors());
 // middleware básico
 app.use(express.json());
 
