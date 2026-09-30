@@ -1,28 +1,41 @@
-import React, { useState, useEffect } from 'react';
-import { flushSync } from 'react-dom';
-import Navbar from './components/Navbar';
-import Footer from './components/Footer';
-import ProductList from './components/ProductList';
-import ProductDetail from './components/ProductDetail';
-import ContactForm from './components/ContactForm';
-import './App.css';
-
+import React, { useState, useEffect } from "react";
+import { flushSync } from "react-dom";
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
+import ProductList from "./components/ProductList";
+import ProductDetail from "./components/ProductDetail";
+import ContactForm from "./components/ContactForm";
+import "./App.css";
 
 function App() {
-  // Estado para el carrito 
+  // Estado para el carrito
   const [carrito, setCarrito] = useState([]);
   // Productos que vienen del backend
   const [productos, setProductos] = useState([]);
+  const [cargando, setCargando] = useState(true);
+  const [error, setError] = useState("");
   // Producto abierto en el detalle (null = se muestra el catálogo)
   const [productoSeleccionado, setProductoSeleccionado] = useState(null);
 
   useEffect(() => {
-    fetch("http://localhost:3001/api/productos")
-      .then(res => res.json())
-      .then(data => {
+    async function cargarProductos() {
+      try {
+        const respuesta = await fetch("http://localhost:3001/api/productos");
+
+        if (!respuesta.ok) {
+          throw new Error("No se pudieron cargar los productos.");
+        }
+
+        const data = await respuesta.json();
         setProductos(data);
-      })
-      .catch(error => console.error("Error:", error));
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setCargando(false);
+      }
+    }
+
+    cargarProductos();
   }, []);
 
   function agregarAlCarrito(producto) {
@@ -55,18 +68,17 @@ function App() {
 
               {/*lista completa de productos*/}
 
-              {productos.length === 0 ? (
-                <p
-                  style={{
-                    textAlign: "center",
-                    width: "100%",
-                    marginTop: "80px"
-                  }}
-                >
-                  No hay productos disponibles
-                </p>
+              {cargando ? (
+                <p role="status">Cargando productos...</p>
+              ) : error ? (
+                <p role="alert">{error}</p>
+              ) : productos.length === 0 ? (
+                <p>No hay productos disponibles</p>
               ) : (
-                <ProductList productos={productos} onVerDetalle={setProductoSeleccionado} />
+                <ProductList
+                  productos={productos}
+                  onVerDetalle={setProductoSeleccionado}
+                />
               )}
             </>
           )}
@@ -76,11 +88,12 @@ function App() {
           <p className="etiqueta">Más de 30 años de tradición familiar</p>
           <h2>Nuestra historia</h2>
           <p>
-            Somos una empresa familiar que combina artesanía, materiales de primera
-            calidad y diseño funcional para acompañarte en cada rincón de tu casa.
-            Nuestra tradición se transmite de generación en generación, con el mismo
-            compromiso de siempre: entregar muebles duraderos, cómodos y con el calor
-            de un trabajo hecho con dedicación.
+            Somos una empresa familiar que combina artesanía, materiales de
+            primera calidad y diseño funcional para acompañarte en cada rincón
+            de tu casa. Nuestra tradición se transmite de generación en
+            generación, con el mismo compromiso de siempre: entregar muebles
+            duraderos, cómodos y con el calor de un trabajo hecho con
+            dedicación.
           </p>
         </section>
 
