@@ -275,7 +275,11 @@ function App() {
         <h1>Catálogo de productos</h1>
 
         {/*lista completa de productos*/}
-        <ProductList productos={PRODUCTOS} onVerDetalle={setProductoSeleccionado} />
+        <ProductList
+          productos={PRODUCTOS}
+          onVerDetalle={setProductoSeleccionado}
+          onAgregarAlCarrito={agregarAlCarrito}
+        />
       </>
     );
   }
