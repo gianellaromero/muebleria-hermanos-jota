@@ -5,6 +5,7 @@ import Footer from './components/Footer';
 import ProductList from './components/ProductList';
 import ProductDetail from './components/ProductDetail';
 import ContactForm from './components/ContactForm';
+import Cart from './components/Cart';
 import './App.css';
 
 // Datos del backend
@@ -192,6 +193,8 @@ function App() {
   const [carrito, setCarrito] = useState([]);
   // Producto abierto en el detalle (null = se muestra el catálogo)
   const [productoSeleccionado, setProductoSeleccionado] = useState(null);
+  // true = se muestra la vista del carrito
+  const [verCarrito, setVerCarrito] = useState(false);
 
   // Total de unidades, para el contador del Navbar
   const cantidadEnCarrito = carrito.reduce((total, item) => total + item.cantidad, 0);
@@ -209,34 +212,85 @@ function App() {
     });
   }
 
-  // Navegación del Navbar: cierra el detalle (si estaba abierto) y baja a la sección.
+  // Resta una unidad; si llega a 0, el producto sale del carrito
+  function restarDelCarrito(id) {
+    setCarrito((anterior) =>
+      anterior
+        .map((item) => (item.id === id ? { ...item, cantidad: item.cantidad - 1 } : item))
+        .filter((item) => item.cantidad > 0)
+    );
+  }
+
+  function quitarDelCarrito(id) {
+    setCarrito((anterior) => anterior.filter((item) => item.id !== id));
+  }
+
+  function vaciarCarrito() {
+    setCarrito([]);
+  }
+
+  // Navegación del Navbar: vuelve al catálogo (cerrando detalle o carrito) y baja a la sección.
   // flushSync hace que React actualice la pantalla antes de calcular el scroll.
   function irASeccion(id) {
-    flushSync(() => setProductoSeleccionado(null));
+    flushSync(() => {
+      setProductoSeleccionado(null);
+      setVerCarrito(false);
+    });
     document.getElementById(id)?.scrollIntoView();
+  }
+
+  function abrirCarrito() {
+    flushSync(() => {
+      setProductoSeleccionado(null);
+      setVerCarrito(true);
+    });
+    document.getElementById('productos')?.scrollIntoView();
+  }
+
+  // Renderizado condicional: carrito, detalle de un producto o catálogo
+  let vistaPrincipal;
+  if (verCarrito) {
+    vistaPrincipal = (
+      <Cart
+        items={carrito}
+        onSumar={agregarAlCarrito}
+        onRestar={restarDelCarrito}
+        onQuitar={quitarDelCarrito}
+        onVaciar={vaciarCarrito}
+        onSeguirComprando={() => setVerCarrito(false)}
+      />
+    );
+  } else if (productoSeleccionado) {
+    vistaPrincipal = (
+      <ProductDetail
+        producto={productoSeleccionado}
+        onAgregarAlCarrito={agregarAlCarrito}
+        onVolver={() => setProductoSeleccionado(null)}
+      />
+    );
+  } else {
+    vistaPrincipal = (
+      <>
+        <p className="etiqueta">Nuestra colección</p>
+        <h1>Catálogo de productos</h1>
+
+        {/*lista completa de productos*/}
+        <ProductList productos={PRODUCTOS} onVerDetalle={setProductoSeleccionado} />
+      </>
+    );
   }
 
   return (
     <div className="App" id="inicio">
-      <Navbar contadorCarrito={cantidadEnCarrito} onNavegar={irASeccion} />
+      <Navbar
+        contadorCarrito={cantidadEnCarrito}
+        onNavegar={irASeccion}
+        onVerCarrito={abrirCarrito}
+      />
 
       <main>
         <section id="productos" className="seccion-productos">
-          {productoSeleccionado ? (
-            <ProductDetail
-              producto={productoSeleccionado}
-              onAgregarAlCarrito={agregarAlCarrito}
-              onVolver={() => setProductoSeleccionado(null)}
-            />
-          ) : (
-            <>
-              <p className="etiqueta">Nuestra colección</p>
-              <h1>Catálogo de productos</h1>
-
-              {/*lista completa de productos*/}
-              <ProductList productos={PRODUCTOS} onVerDetalle={setProductoSeleccionado} />
-            </>
-          )}
+          {vistaPrincipal}
         </section>
 
         <section id="nosotros" className="seccion-nosotros">

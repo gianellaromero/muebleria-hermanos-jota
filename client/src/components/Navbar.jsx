@@ -7,7 +7,7 @@ const SECCIONES = [
   { id: 'contacto', texto: 'Contacto' },
 ];
 
-export default function Navbar({ contadorCarrito, onNavegar }) {
+export default function Navbar({ contadorCarrito, onNavegar, onVerCarrito }) {
   // Se evita la recarga de la página (perdería el carrito) y App decide a dónde ir
   function handleClick(evento, id) {
     evento.preventDefault();
@@ -26,9 +26,18 @@ export default function Navbar({ contadorCarrito, onNavegar }) {
               <a href={`#${id}`} onClick={(e) => handleClick(e, id)}>{texto}</a>
             </li>
           ))}
-          <li className="nav-carrito">
-            <span aria-hidden="true">🛒</span> Carrito
-            <span className="contador-carrito">{contadorCarrito || 0}</span>
+          <li>
+            <a
+              href="#carrito"
+              className="nav-carrito"
+              onClick={(e) => {
+                e.preventDefault();
+                onVerCarrito();
+              }}
+            >
+              <span aria-hidden="true">🛒</span> Carrito
+              <span className="contador-carrito">{contadorCarrito || 0}</span>
+            </a>
           </li>
         </ul>
       </nav>
