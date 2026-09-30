@@ -188,13 +188,25 @@ const PRODUCTOS = [
 ];
 
 function App() {
-  // Estado para el carrito 
+  // Carrito: cada item es { ...producto, cantidad }
   const [carrito, setCarrito] = useState([]);
   // Producto abierto en el detalle (null = se muestra el catálogo)
   const [productoSeleccionado, setProductoSeleccionado] = useState(null);
 
+  // Total de unidades, para el contador del Navbar
+  const cantidadEnCarrito = carrito.reduce((total, item) => total + item.cantidad, 0);
+
+  // Si el producto ya está en el carrito suma una unidad; si no, lo agrega
   function agregarAlCarrito(producto) {
-    setCarrito((anterior) => [...anterior, producto]);
+    setCarrito((anterior) => {
+      const existe = anterior.some((item) => item.id === producto.id);
+      if (!existe) {
+        return [...anterior, { ...producto, cantidad: 1 }];
+      }
+      return anterior.map((item) =>
+        item.id === producto.id ? { ...item, cantidad: item.cantidad + 1 } : item
+      );
+    });
   }
 
   // Navegación del Navbar: cierra el detalle (si estaba abierto) y baja a la sección.
@@ -206,7 +218,7 @@ function App() {
 
   return (
     <div className="App" id="inicio">
-      <Navbar contadorCarrito={carrito.length} onNavegar={irASeccion} />
+      <Navbar contadorCarrito={cantidadEnCarrito} onNavegar={irASeccion} />
 
       <main>
         <section id="productos" className="seccion-productos">
