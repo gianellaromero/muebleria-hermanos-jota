@@ -541,3 +541,23 @@ button.boton-volver {
 
 .boton-quitar:hover,
 .boton-quitar:focus { color: #8a2f22; }
+
+.imagen-producto {
+    display: block;
+    width: 100%;
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+}
+
+.imagen-producto img {
+    width: 100%;
+    transition: transform 0.3s ease-in-out;
+}
+
+.imagen-producto:hover img,
+.imagen-producto:focus img {
+    transform: scale(1.05);
+}
+

@@ -18,9 +18,18 @@ export default function ProductCard({ producto, onVerDetalle, onAgregarAlCarrito
   return (
     <article className="tarjeta-mueble">
       <figure>
-        <img src={producto.imagen} alt={producto.alt} />
+        <button
+          type="button"
+          className="imagen-producto"
+          onClick={() => onVerDetalle(producto)}
+          aria-label={`Ver detalle de ${producto.nombre}`}
+        >
+          <img src={producto.imagen} alt={producto.alt} />
+        </button>
+
         <figcaption>{producto.categoria}</figcaption>
       </figure>
+
       <div className="contenido-tarjeta">
         <h2>{producto.nombre}</h2>
         <p>{producto.descripcionCorta}</p>

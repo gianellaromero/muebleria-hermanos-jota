@@ -173,7 +173,8 @@ function App() {
         <section id="productos" className="seccion-productos">
           {vistaPrincipal}
         </section>
-
+{!productoSeleccionado && (
+  <>
         <section id="nosotros" className="seccion-nosotros">
           <p className="etiqueta">
             Más de 30 años de tradición familiar
@@ -198,6 +199,8 @@ function App() {
 
           <ContactForm />
         </section>
+         </>
+)}
       </main>
 
       <Footer />
