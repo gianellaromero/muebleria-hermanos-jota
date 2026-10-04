@@ -32,6 +32,7 @@ Francisco Garcia Sorrenti
 
 Khiara Razzolini
 
+Joaquin Gonzalez
 
 📁 Estructura del proyecto
 /
