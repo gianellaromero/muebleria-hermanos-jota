@@ -1,136 +1,258 @@
-🪑 E-commerce Mueblería Hermanos Jota
+<div align="center">
 
-Aplicación web de e-commerce desarrollada como proyecto académico durante los Sprints 3 y 4, con una arquitectura separada en frontend (React) y backend (Node.js + Express).
+<img src="./client/public/img/logo.svg" alt="Mueblería Hermanos Jota" width="190">
 
-🚀 Tecnologías utilizadas
-Frontend
+# 🪑 E-commerce Mueblería Hermanos Jota
 
-React
+### Aplicación web Full Stack · React + Node.js + Express
 
-JavaScript
+![React](https://img.shields.io/badge/React-19.3-61DAFB?logo=react&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-F7DF1E?logo=javascript&logoColor=black)
+![Node.js](https://img.shields.io/badge/Node.js-Backend-339933?logo=node.js&logoColor=white)
+![Express](https://img.shields.io/badge/Express-5.2-000000?logo=express&logoColor=white)
+![Status](https://img.shields.io/badge/Estado-Completado-success)
 
-CSS
+**Proyecto académico desarrollado durante los Sprints 3 y 4.**
 
+</div>
 
+---
 
-Backend
+## 📖 Descripción
 
-Node.js
+**Mueblería Hermanos Jota** es una aplicación web de e-commerce desarrollada con una arquitectura separada entre **frontend** y **backend**.
 
-Express.js
+El sistema permite consultar un catálogo de muebles, visualizar el detalle de cada producto y gestionar un carrito de compras. La interfaz fue desarrollada con **React**, mientras que el backend utiliza **Node.js + Express** para exponer la información de productos mediante una API REST.
 
-CORS
+---
 
+## 🖼️ Vista del catálogo
 
-👥 Integrantes
+<p align="center">
+  <img src="./client/public/img/sofa-patagonia.png" alt="Sofá Patagonia" width="31%">
+  <img src="./client/public/img/mesa-comedor-pampa.png" alt="Mesa de comedor Pampa" width="31%">
+  <img src="./client/public/img/biblioteca-recoleta.png" alt="Biblioteca Recoleta" width="31%">
+</p>
 
-Gianella Romero
+> Las imágenes utilizadas forman parte de los recursos del propio proyecto.
 
-Daiana Elizabeth Villagra
+---
 
-Francisco Garcia Sorrenti
+## ✨ Funcionalidades principales
 
-Khiara Razzolini
+- 🛍️ Catálogo de productos
+- 🔎 Visualización del detalle de cada producto
+- 🛒 Carrito de compras
+- ➕ Agregado de productos al carrito
+- ➖ Modificación de cantidades
+- 🗑️ Eliminación de productos y vaciado del carrito
+- 🧭 Navegación entre las distintas secciones
+- 📡 Consumo de API mediante `fetch`
+- ⚠️ Manejo de estados de carga y error
+- 🔗 Integración entre frontend y backend
 
-Joaquin Gonzalez
+---
 
-📁 Estructura del proyecto
-/
-├── client/      # Frontend desarrollado en React
-├── backend/     # API desarrollada con Node.js y Express
+## 🛠️ Tecnologías utilizadas
+
+### Frontend
+
+- **React 19**
+- **JavaScript**
+- **CSS**
+- Fetch API
+- React Scripts
+
+### Backend
+
+- **Node.js**
+- **Express.js**
+- **CORS**
+- API REST
+
+---
+
+## 🏗️ Arquitectura
+
+El proyecto está organizado en dos aplicaciones independientes:
+
+```text
+muebleria-hermanos-jota/
+│
+├── client/                 # Aplicación frontend en React
+│   ├── public/
+│   │   └── img/            # Imágenes y recursos visuales
+│   ├── src/
+│   │   ├── components/
+│   │   ├── App.js
+│   │   └── App.css
+│   └── package.json
+│
+├── backend/                # API REST en Node.js + Express
+│   ├── data/
+│   ├── middlewares/
+│   ├── routes/
+│   ├── server.js
+│   └── package.json
+│
 └── README.md
+```
 
+### Flujo de comunicación
 
-▶️ Ejecución
+```mermaid
+flowchart LR
+    A[Usuario] --> B[Frontend React]
+    B -->|HTTP / fetch| C[API Node.js + Express]
+    C --> D[Datos de productos]
+    D --> C
+    C -->|JSON| B
+    B --> A
+```
 
+---
 
-🔹 Backend
+## 🚀 Instalación y ejecución
 
+### Requisitos previos
+
+Es necesario contar con:
+
+- **Node.js**
+- **npm**
+
+### 1. Clonar el repositorio
+
+```bash
+git clone https://github.com/gianellaromero/muebleria-hermanos-jota.git
+cd muebleria-hermanos-jota
+```
+
+### 2. Iniciar el backend
+
+```bash
 cd backend
 npm install
-node server.js
+npm start
+```
 
-El backend corre en:
+El backend se ejecuta en:
+
+```text
 http://localhost:3001
+```
 
-API disponible en:
+Endpoint principal de productos:
+
+```text
 http://localhost:3001/api/productos
+```
 
+### 3. Iniciar el frontend
 
-🔹 Frontend
+En una nueva terminal:
 
-En otra terminal:
-
+```bash
 cd client
 npm install
 npm start
+```
 
-El frontend corre en:
+El frontend se ejecuta en:
+
+```text
 http://localhost:3000
+```
 
+> [!IMPORTANT]
+> El backend debe estar activo para que el frontend pueda obtener la información de los productos desde la API.
 
+---
 
-🏗️ Arquitectura
+## 🔗 Integración Frontend / Backend
 
-El proyecto utiliza una arquitectura separada en dos partes principales: frontend y backend.
+El frontend realiza solicitudes HTTP al backend mediante `fetch`.
 
-Frontend
+La API expone los productos a través del endpoint:
 
-El frontend está desarrollado con React y se encarga de la interfaz de usuario, la navegación entre las diferentes secciones, la visualización de los productos, el detalle de cada producto y la gestión del carrito de compras.
+```http
+GET /api/productos
+```
 
-Backend
+Express procesa la solicitud y devuelve los datos en formato JSON. React utiliza esa respuesta para renderizar dinámicamente el catálogo y las vistas asociadas a los productos.
 
-El backend está desarrollado con Node.js y Express y funciona como una API encargada de proporcionar los datos de los productos al frontend.
+---
 
+## 💡 Decisiones de desarrollo
 
-💡 Decisiones tomadas
+La separación entre **frontend y backend** permite mantener responsabilidades claras dentro del proyecto.
 
-Se decidió separar el proyecto en frontend y backend para mantener una estructura organizada y permitir que cada parte tenga responsabilidades específicas.
+- **React** se utiliza para construir la interfaz mediante componentes reutilizables y manejar los diferentes estados de la aplicación.
+- **Node.js + Express** conforman la API encargada de centralizar y entregar los datos de productos.
+- **CORS** permite la comunicación entre el frontend, ejecutado en el puerto `3000`, y el backend, ejecutado en el puerto `3001`.
+- La organización por componentes facilita el mantenimiento del catálogo, el detalle de productos, la navegación, el formulario de contacto y el carrito.
 
-Se utilizó React para desarrollar la interfaz del usuario y trabajar con componentes reutilizables.
+---
 
-Se utilizó Node.js con Express para desarrollar la API del backend y gestionar las solicitudes HTTP.
+## 📂 Componentes principales del frontend
 
-Se utilizó CORS para permitir la comunicación entre el frontend, que se ejecuta en el puerto 3000, y el backend, que se ejecuta en el puerto 3001.
+Entre los componentes utilizados se encuentran:
 
+```text
+Cart.jsx
+ContactForm.jsx
+Footer.jsx
+Navbar.jsx
+ProductCard.jsx
+ProductDetail.jsx
+ProductList.jsx
+```
 
-🔗 Integración
+Esto permite mantener la interfaz dividida en responsabilidades específicas y reutilizables.
 
-El frontend consume los datos de productos proporcionados por el backend mediante fetch. De esta manera, el frontend obtiene la información desde la API y la utiliza para mostrar los productos en la aplicación.
+---
 
-🛒 Funcionalidades
+## 👥 Equipo
 
-Catálogo de productos
+| Integrante |
+|---|
+| Gianella Romero |
+| Daiana Elizabeth Villagra |
+| Francisco Garcia Sorrenti |
+| Khiara Razzolini |
+| Joaquín González |
 
-Visualización del detalle de los productos
+---
 
-Carrito de compras
+## 📌 Estado del proyecto
 
-Navegación entre secciones
+| Etapa | Objetivo | Estado |
+|---|---|---|
+| Sprint 3 | Desarrollo de API backend | ✅ Completado |
+| Sprint 4 | Integración Frontend / Backend | ✅ Completado |
+| Entrega final | Integración y ajustes finales | ✅ Completado |
 
-Consumo de API
+---
 
-Integración entre frontend y backend
+## 🎓 Proyecto académico
 
-⚠️ Notas importantes
+Proyecto desarrollado con fines académicos dentro de la formación **Full Stack – Santander / ITBA**, aplicando conceptos de:
 
-Ejecutar npm install en las carpetas backend y client antes de iniciar los servidores.
+- Desarrollo web con React
+- Arquitectura cliente-servidor
+- APIs REST
+- Node.js y Express
+- Integración frontend-backend
+- Organización de código mediante componentes
 
-El backend debe estar activo para que el frontend pueda obtener los productos desde la API.
+---
 
-Ambos servidores deben ejecutarse de manera independiente.
+<div align="center">
 
-El frontend utiliza el puerto 3000.
+### 🪑 Mueblería Hermanos Jota
 
-El backend utiliza el puerto 3001.
+**React · JavaScript · Node.js · Express**
 
-Se utiliza CORS para permitir la comunicación entre ambos servidores.
+Proyecto académico · 2026
 
-📌 Estado del proyecto
-
-✔ Sprint 3 completado (API backend)
-✔ Sprint 4 completado (integración frontend-backend)
-
-📄 Licencia
-
-Proyecto desarrollado con fines académicos.
+</div>
