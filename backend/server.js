@@ -1,11 +1,20 @@
+// Variables de entorno (backend/.env): tiene que ir antes que todo lo demás
+require("dotenv").config({ quiet: true });
+
 const express = require("express");
 const app = express();
 const cors = require('cors');
 const productosRoutes = require("./routes/productos");
 const logger = require("./middlewares/logger");
 const errorHandler = require("./middlewares/errorHandler");
-// cors
- app.use(cors());
+
+// CORS: solo se aceptan pedidos de los frontends listados en FRONTEND_URL
+// (separados por coma). En desarrollo, React corre en http://localhost:3000
+const origenesPermitidos = (process.env.FRONTEND_URL || "http://localhost:3000")
+  .split(",")
+  .map((url) => url.trim());
+
+app.use(cors({ origin: origenesPermitidos }));
 // middleware básico
 app.use(express.json());
 

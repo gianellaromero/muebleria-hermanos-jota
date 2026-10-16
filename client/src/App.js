@@ -6,6 +6,7 @@ import ProductList from "./components/ProductList";
 import ProductDetail from "./components/ProductDetail";
 import ContactForm from "./components/ContactForm";
 import Cart from "./components/Cart";
+import { obtenerProductos } from "./api/productos";
 import "./App.css";
 
 function App() {
@@ -27,13 +28,7 @@ function App() {
   useEffect(() => {
     async function cargarProductos() {
       try {
-        const respuesta = await fetch("http://localhost:3001/api/productos");
-
-        if (!respuesta.ok) {
-          throw new Error("No se pudieron cargar los productos.");
-        }
-
-        const data = await respuesta.json();
+        const data = await obtenerProductos();
         setProductos(data);
       } catch (error) {
         setError(error.message);
