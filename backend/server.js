@@ -6,6 +6,7 @@ const app = express();
 const cors = require('cors');
 const productosRoutes = require("./routes/productos");
 const logger = require("./middlewares/logger");
+const notFound = require("./middlewares/notFound");
 const errorHandler = require("./middlewares/errorHandler");
 
 // CORS: solo se aceptan pedidos de los frontends listados en FRONTEND_URL
@@ -29,10 +30,8 @@ app.get("/", (req, res) => {
   res.send("API funcionando");
 });
 
-// ruta no encontrada
-app.use((req, res) => {
-  res.status(404).json({ error: "Ruta no encontrada" });
-});
+// ruta no encontrada (404) → pasa al errorHandler
+app.use(notFound);
 
 // error handler
 app.use(errorHandler);

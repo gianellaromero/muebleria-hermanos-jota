@@ -1,27 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const PRODUCTOS = require("../data/productos");
+const { obtenerProductos, obtenerProductoPorId } = require("../controllers/productosController");
 
-// GET todos los productos
-router.get("/", (req, res) => {
-  res.json(PRODUCTOS);
-});
-
-// GET producto por id
-router.get("/:id", (req, res) => {
-  // Solo se aceptan enteros positivos: "3abc" o "1.9" no deben devolver un producto
-  if (!/^\d+$/.test(req.params.id)) {
-    return res.status(400).json({ error: "El id debe ser un número entero positivo" });
-  }
-
-  const id = Number(req.params.id);
-  const producto = PRODUCTOS.find(p => p.id === id);
-
-  if (!producto) {
-    return res.status(404).json({ error: "Producto no encontrado" });
-  }
-
-  res.json(producto);
-});
+// Las rutas solo indican qué función atiende cada pedido; la lógica está en el controller
+router.get("/", obtenerProductos);
+router.get("/:id", obtenerProductoPorId);
 
 module.exports = router;
