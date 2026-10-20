@@ -1,8 +1,4 @@
-import React from 'react';
-
-function formatearPrecio(valor) {
-  return `$${valor.toLocaleString('es-AR')}`;
-}
+import { formatPrice } from '../utils/formatPrice';
 
 export default function Cart({ items, onSumar, onRestar, onQuitar, onVaciar, onSeguirComprando }) {
   const total = items.reduce((suma, item) => suma + item.precio * item.cantidad, 0);
@@ -26,8 +22,8 @@ export default function Cart({ items, onSumar, onRestar, onQuitar, onVaciar, onS
 
               <div className="fila-carrito-info">
                 <h2>{item.nombre}</h2>
-                <p>Precio unitario: {formatearPrecio(item.precio)}</p>
-                <p><strong>Subtotal:</strong> {formatearPrecio(item.precio * item.cantidad)}</p>
+                <p>Precio unitario: {formatPrice(item.precio)}</p>
+                <p><strong>Subtotal:</strong> {formatPrice(item.precio * item.cantidad)}</p>
               </div>
 
               <div className="fila-carrito-acciones">
@@ -56,7 +52,7 @@ export default function Cart({ items, onSumar, onRestar, onQuitar, onVaciar, onS
           ))}
 
           <div className="resumen-carrito">
-            <p className="precio"><strong>Total:</strong> {formatearPrecio(total)}</p>
+            <p className="precio"><strong>Total:</strong> {formatPrice(total)}</p>
             <button
               type="button"
               className="boton"

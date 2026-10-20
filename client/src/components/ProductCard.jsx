@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+import { formatPrice } from '../utils/formatPrice';
 
 export default function ProductCard({ producto, onVerDetalle, onAgregarAlCarrito }) {
   // Cambia el texto del botón a "✓ Agregado" por un momento
@@ -33,7 +34,7 @@ export default function ProductCard({ producto, onVerDetalle, onAgregarAlCarrito
       <div className="contenido-tarjeta">
         <h2>{producto.nombre}</h2>
         <p>{producto.descripcionCorta}</p>
-        <p className="precio">${producto.precio.toLocaleString()}</p>
+        <p className="precio">{formatPrice(producto.precio)}</p>
         <div className="acciones">
           <button className="boton" type="button" onClick={() => onVerDetalle(producto)}>Ver detalle</button>
           <button className="boton boton-secundario" type="button" onClick={handleAgregar}>
