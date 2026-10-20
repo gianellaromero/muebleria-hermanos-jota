@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ProductForm from '../components/ProductForm';
-import { crearProducto } from '../api/productos';
+import { crearProducto } from '../services/productos';
 
 // Tiempo que se muestra el mensaje de éxito antes de volver al catálogo
 const ESPERA_REDIRECCION_MS = 1500;

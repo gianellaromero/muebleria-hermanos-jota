@@ -1,119 +1,81 @@
-import React, { useState, useEffect } from "react";
-import { flushSync } from "react-dom";
+import { useState, useEffect } from "react";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
-import ProductList from "./components/ProductList";
+import Catalog from "./components/Catalog";
 import ProductDetail from "./components/ProductDetail";
-import ContactForm from "./components/ContactForm";
 import Cart from "./components/Cart";
-import { obtenerProductos } from "./api/productos";
+import AboutSection from "./components/AboutSection";
+import ContactSection from "./components/ContactSection";
+import { useProductos } from "./hooks/useProductos";
 import "./App.css";
 
 function App() {
+  // Productos de la API (se piden una sola vez)
+  const { productos, cargando, error } = useProductos();
   // Carrito: cada item es { ...producto, cantidad }
   const [carrito, setCarrito] = useState([]);
-
-  // Productos que vienen del backend
-  const [productos, setProductos] = useState([]);
-  const [cargando, setCargando] = useState(true);
-  const [error, setError] = useState("");
-
-  // Producto abierto en el detalle
-  const [productoSeleccionado, setProductoSeleccionado] = useState(null);
-
+  // Id del producto abierto en el detalle (null = no hay detalle abierto)
+  const [productoSeleccionadoId, setProductoSeleccionadoId] = useState(null);
   // true = se muestra la vista del carrito
   const [verCarrito, setVerCarrito] = useState(false);
+  // Sección a la que hay que bajar después de cambiar de vista: { id }
+  const [seccionDestino, setSeccionDestino] = useState(null);
 
-  // Cargar productos desde el backend
+  // Cuando cambia la sección destino, React ya mostró la vista nueva:
+  // recién ahí existe el elemento y se puede hacer scroll
   useEffect(() => {
-    async function cargarProductos() {
-      try {
-        const data = await obtenerProductos();
-        setProductos(data);
-      } catch (error) {
-        setError(error.message);
-      } finally {
-        setCargando(false);
-      }
-    }
+    if (!seccionDestino) return;
+    document.getElementById(seccionDestino.id)?.scrollIntoView();
+  }, [seccionDestino]);
 
-    cargarProductos();
-  }, []);
+  // Total de unidades, para el contador del Navbar
+  const cantidadEnCarrito = carrito.reduce((total, item) => total + item.cantidad, 0);
 
-  // Total de unidades en el carrito
-  const cantidadEnCarrito = carrito.reduce(
-    (total, item) => total + item.cantidad,
-    0
-  );
-
-  // Si el producto ya está en el carrito suma una unidad;
-  // si no, lo agrega
+  // Si el producto ya está en el carrito suma una unidad; si no, lo agrega
   function agregarAlCarrito(producto) {
     setCarrito((anterior) => {
       const existe = anterior.some((item) => item.id === producto.id);
-
       if (!existe) {
         return [...anterior, { ...producto, cantidad: 1 }];
       }
-
       return anterior.map((item) =>
-        item.id === producto.id
-          ? { ...item, cantidad: item.cantidad + 1 }
-          : item
+        item.id === producto.id ? { ...item, cantidad: item.cantidad + 1 } : item
       );
     });
   }
 
-  // Resta una unidad; si llega a 0, sale del carrito
+  // Resta una unidad; si llega a 0, el producto sale del carrito
   function restarDelCarrito(id) {
     setCarrito((anterior) =>
       anterior
-        .map((item) =>
-          item.id === id
-            ? { ...item, cantidad: item.cantidad - 1 }
-            : item
-        )
+        .map((item) => (item.id === id ? { ...item, cantidad: item.cantidad - 1 } : item))
         .filter((item) => item.cantidad > 0)
     );
   }
 
-  // Elimina completamente un producto del carrito
   function quitarDelCarrito(id) {
-    setCarrito((anterior) =>
-      anterior.filter((item) => item.id !== id)
-    );
+    setCarrito((anterior) => anterior.filter((item) => item.id !== id));
   }
 
-  // Vacía todo el carrito
   function vaciarCarrito() {
     setCarrito([]);
   }
 
-  // Navegación del Navbar:
-  // cierra detalle/carrito y baja a la sección correspondiente
+  // Navbar: vuelve al catálogo (cerrando detalle o carrito) y baja a la sección
   function irASeccion(id) {
-    flushSync(() => {
-      setProductoSeleccionado(null);
-      setVerCarrito(false);
-    });
-
-    document.getElementById(id)?.scrollIntoView();
+    setProductoSeleccionadoId(null);
+    setVerCarrito(false);
+    setSeccionDestino({ id });
   }
 
-  // Abre el carrito
   function abrirCarrito() {
-    flushSync(() => {
-      setProductoSeleccionado(null);
-      setVerCarrito(true);
-    });
-
-    document.getElementById("productos")?.scrollIntoView();
+    setProductoSeleccionadoId(null);
+    setVerCarrito(true);
+    setSeccionDestino({ id: "productos" });
   }
 
-  // Renderizado condicional:
-  // carrito, detalle de producto o catálogo
+  // Renderizado condicional: carrito, detalle de un producto o catálogo
   let vistaPrincipal;
-
   if (verCarrito) {
     vistaPrincipal = (
       <Cart
@@ -125,34 +87,23 @@ function App() {
         onSeguirComprando={() => setVerCarrito(false)}
       />
     );
-  } else if (productoSeleccionado) {
+  } else if (productoSeleccionadoId !== null) {
     vistaPrincipal = (
       <ProductDetail
-        producto={productoSeleccionado}
+        id={productoSeleccionadoId}
         onAgregarAlCarrito={agregarAlCarrito}
-        onVolver={() => setProductoSeleccionado(null)}
+        onVolver={() => setProductoSeleccionadoId(null)}
       />
     );
   } else {
     vistaPrincipal = (
-      <>
-        <p className="etiqueta">Nuestra colección</p>
-        <h1>Catálogo de productos</h1>
-
-        {cargando ? (
-          <p role="status">Cargando productos...</p>
-        ) : error ? (
-          <p role="alert">{error}</p>
-        ) : productos.length === 0 ? (
-          <p>No hay productos disponibles</p>
-        ) : (
-          <ProductList
-            productos={productos}
-            onVerDetalle={setProductoSeleccionado}
-            onAgregarAlCarrito={agregarAlCarrito}
-          />
-        )}
-      </>
+      <Catalog
+        productos={productos}
+        cargando={cargando}
+        error={error}
+        onVerDetalle={(producto) => setProductoSeleccionadoId(producto.id)}
+        onAgregarAlCarrito={agregarAlCarrito}
+      />
     );
   }
 
@@ -168,34 +119,14 @@ function App() {
         <section id="productos" className="seccion-productos">
           {vistaPrincipal}
         </section>
-{!productoSeleccionado && (
-  <>
-        <section id="nosotros" className="seccion-nosotros">
-          <p className="etiqueta">
-            Más de 30 años de tradición familiar
-          </p>
 
-          <h2>Nuestra historia</h2>
-
-          <p>
-            Somos una empresa familiar que combina artesanía, materiales de
-            primera calidad y diseño funcional para acompañarte en cada rincón
-            de tu casa. Nuestra tradición se transmite de generación en
-            generación, con el mismo compromiso de siempre: entregar muebles
-            duraderos, cómodos y con el calor de un trabajo hecho con
-            dedicación.
-          </p>
-        </section>
-
-        <section id="contacto" className="seccion-contacto">
-          <p className="etiqueta">Estamos para ayudarte</p>
-
-          <h2>Contacto</h2>
-
-          <ContactForm />
-        </section>
-         </>
-)}
+        {/* En el detalle se ocultan Nosotros y Contacto */}
+        {productoSeleccionadoId === null && (
+          <>
+            <AboutSection />
+            <ContactSection />
+          </>
+        )}
       </main>
 
       <Footer />
