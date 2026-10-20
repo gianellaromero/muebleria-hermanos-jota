@@ -1,5 +1,3 @@
-import React from 'react';
-
 const SECCIONES = [
   { id: 'inicio', texto: 'Inicio' },
   { id: 'productos', texto: 'Productos' },

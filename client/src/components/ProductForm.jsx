@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 const FORMULARIO_VACIO = { nombre: '', descripcion: '', precio: '', stock: '', imagenUrl: '' };
 
