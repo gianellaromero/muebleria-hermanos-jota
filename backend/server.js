@@ -1,5 +1,6 @@
 // Variables de entorno (backend/.env): tiene que ir antes que todo lo demás
 require("dotenv").config({ quiet: true });
+const conectarDB = require("./config/db");
 
 const express = require("express");
 const app = express();
@@ -39,11 +40,12 @@ app.use(errorHandler);
 // levantar servidor (3001 para no chocar con React, que usa el 3000)
 const PORT = process.env.PORT || 3001;
 
-app.listen(PORT, (error) => {
-  // En Express 5, si el puerto está ocupado el error llega a este callback
-  if (error) {
-    console.error(`No se pudo iniciar el servidor en el puerto ${PORT}: ${error.message}`);
-    process.exit(1);
-  }
-  console.log(`Servidor corriendo en http://localhost:${PORT}`);
-});
+const iniciarServidor = async () => {
+  await conectarDB();
+
+  app.listen(PORT, () => {
+    console.log(`Servidor corriendo en http://localhost:${PORT}`);
+  });
+};
+
+iniciarServidor();
