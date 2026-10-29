@@ -1,43 +1,31 @@
-import React from 'react';
+import { NavLink } from 'react-router-dom';
 
-const SECCIONES = [
-  { id: 'inicio', texto: 'Inicio' },
-  { id: 'productos', texto: 'Productos' },
-  { id: 'nosotros', texto: 'Nosotros' },
-  { id: 'contacto', texto: 'Contacto' },
-];
-
-export default function Navbar({ contadorCarrito, onNavegar, onVerCarrito }) {
-  // Se evita la recarga de la página (perdería el carrito) y App decide a dónde ir
-  function handleClick(evento, id) {
-    evento.preventDefault();
-    onNavegar(id);
-  }
+export default function Navbar({ contadorCarrito = 0 }) {
+  // Función para aplicar estilo cuando la ruta está activa
+  const claseActiva = ({ isActive }) => (isActive ? 'activo' : '');
 
   return (
     <header className="encabezado">
-      <a href="#inicio" aria-label="Ir al inicio" onClick={(e) => handleClick(e, 'inicio')}>
+      <NavLink to="/" aria-label="Ir al inicio" className={claseActiva}>
         <img src="/img/logo.svg" alt="Logo de Mueblería Hermanos Jota" width="180" height="60" />
-      </a>
+      </NavLink>
+      
       <nav aria-label="Navegación principal">
         <ul className="navegacion">
-          {SECCIONES.map(({ id, texto }) => (
-            <li key={id}>
-              <a href={`#${id}`} onClick={(e) => handleClick(e, id)}>{texto}</a>
-            </li>
-          ))}
           <li>
-            <a
-              href="#carrito"
-              className="nav-carrito"
-              onClick={(e) => {
-                e.preventDefault();
-                onVerCarrito();
-              }}
-            >
-              <span aria-hidden="true">🛒</span> Carrito
-              <span className="contador-carrito">{contadorCarrito || 0}</span>
-            </a>
+            <NavLink to="/" className={claseActiva}>Inicio</NavLink>
+          </li>
+          <li>
+            <NavLink to="/productos" className={claseActiva}>Productos</NavLink>
+          </li>
+          <li>
+            <NavLink to="/contacto" className={claseActiva}>Contacto</NavLink>
+          </li>
+          <li>
+            <NavLink to="/carrito" className={claseActiva} style={{ display: 'inline-flex', alignItems: 'center', gap: '.35rem' }}>
+              <span aria-hidden="true"></span> Carrito
+              <span className="contador-carrito">{contadorCarrito}</span>
+            </NavLink>
           </li>
         </ul>
       </nav>

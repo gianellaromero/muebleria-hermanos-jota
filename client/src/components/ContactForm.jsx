@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 const FORMULARIO_VACIO = { nombre: '', email: '', mensaje: '' };
 const MINIMO_MENSAJE = 10;

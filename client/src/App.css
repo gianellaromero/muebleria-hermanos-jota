@@ -561,3 +561,88 @@ button.boton-volver {
     transform: scale(1.05);
 }
 
+
+/* ===== Sprint 5: formulario de producto (admin) ===== */
+.seccion-admin {
+    width: min(calc(100% - 2rem), 760px);
+    margin: auto;
+    padding: 4rem 0;
+}
+
+.seccion-admin h1 {
+    margin: .5rem 0 1.5rem;
+    color: var(--marron);
+    font-size: clamp(2rem, 6vw, 3.5rem);
+}
+
+.formulario-producto {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.formulario-producto label {
+    display: block;
+    margin-bottom: .3rem;
+    color: var(--marron);
+    font: bold 1rem Arial, sans-serif;
+}
+
+.formulario-producto input,
+.formulario-producto textarea {
+    width: 100%;
+    padding: .8rem;
+    border: 1px solid var(--borde);
+    background: var(--blanco);
+    color: var(--texto);
+    font: inherit;
+}
+
+.formulario-producto input:focus,
+.formulario-producto textarea:focus {
+    outline: 2px solid var(--naranja);
+    border-color: var(--naranja);
+}
+
+.formulario-producto [aria-invalid="true"] { border-color: #8a2f22; }
+
+.formulario-producto .mensaje-error { margin: .4rem 0 0; }
+
+/* Precio y stock: uno debajo del otro en celular, lado a lado en pantallas grandes */
+.fila-formulario {
+    display: grid;
+    gap: 1rem;
+}
+
+@media (min-width: 700px) {
+    .fila-formulario { grid-template-columns: 1fr 1fr; }
+}
+
+.vista-previa {
+    width: 160px;
+    height: 120px;
+    margin-top: .6rem;
+    object-fit: contain;
+    background: var(--blanco);
+    border: 1px solid var(--borde);
+}
+
+.ayuda-formulario {
+    margin: 0;
+    color: var(--gris);
+    font: .85rem Arial, sans-serif;
+}
+
+.formulario-producto .boton:disabled {
+    opacity: .6;
+    cursor: wait;
+    transform: none;
+}
+
+
+/* Estilo para el NavLink activo en el Navbar */
+.navegacion a.activo {
+  color: var(--naranja);
+  font-weight: bold;
+  border-bottom: 2px solid var(--naranja);
+}

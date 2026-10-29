@@ -1,11 +1,41 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+import { obtenerProducto } from '../services/productos';
+import { formatPrice } from '../utils/formatPrice';
 
-export default function ProductDetail({ producto, onAgregarAlCarrito, onVolver }) {
+// Recibe solo el id y pide el producto a GET /api/productos/:id.
+// Con React Router, el id puede venir de useParams().
+export default function ProductDetail({ id, onAgregarAlCarrito, onVolver }) {
+  const [producto, setProducto] = useState(null);
+  const [cargando, setCargando] = useState(true);
+  const [error, setError] = useState('');
   // Muestra el aviso "Producto añadido" durante unos segundos
   const [agregado, setAgregado] = useState(false);
 
-  // Al abrir un producto: subir al inicio y actualizar el título de la pestaña
+  // Cada vez que cambia el id se pide el producto a la API
   useEffect(() => {
+    let cancelado = false; // evita actualizar el estado si el usuario ya se fue
+
+    setCargando(true);
+    setError('');
+    obtenerProducto(id)
+      .then((data) => {
+        if (!cancelado) setProducto(data);
+      })
+      .catch((err) => {
+        if (!cancelado) setError(err.message);
+      })
+      .finally(() => {
+        if (!cancelado) setCargando(false);
+      });
+
+    return () => {
+      cancelado = true;
+    };
+  }, [id]);
+
+  // Al mostrar un producto: subir al inicio y actualizar el título de la pestaña
+  useEffect(() => {
+    if (!producto) return;
     window.scrollTo(0, 0);
     document.title = `Mueblería Hermanos Jota | ${producto.nombre}`;
     return () => {
@@ -25,11 +55,33 @@ export default function ProductDetail({ producto, onAgregarAlCarrito, onVolver }
     setAgregado(true);
   }
 
+  const botonVolver = (
+    <button type="button" className="boton-volver" onClick={onVolver}>
+      ← Volver al catálogo
+    </button>
+  );
+
+  if (cargando) {
+    return (
+      <>
+        {botonVolver}
+        <p className="cargando" role="status">Cargando producto...</p>
+      </>
+    );
+  }
+
+  if (error) {
+    return (
+      <>
+        {botonVolver}
+        <p className="mensaje-error" role="alert">{error}</p>
+      </>
+    );
+  }
+
   return (
     <>
-      <button type="button" className="boton-volver" onClick={onVolver}>
-        ← Volver al catálogo
-      </button>
+      {botonVolver}
 
       <article className="producto-detalle">
         <img src={producto.imagen} alt={producto.alt} width="600" height="450" />
@@ -51,7 +103,7 @@ export default function ProductDetail({ producto, onAgregarAlCarrito, onVolver }
           )}
 
           <p className="precio">
-            <strong>Precio:</strong> ${producto.precio.toLocaleString('es-AR')}
+            <strong>Precio:</strong> {formatPrice(producto.precio)}
           </p>
 
           <button className="boton" type="button" onClick={handleAgregar}>
