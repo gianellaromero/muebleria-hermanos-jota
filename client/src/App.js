@@ -1,55 +1,37 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
-import Catalog from "./components/Catalog";
-import ProductDetail from "./components/ProductDetail";
-import Cart from "./components/Cart";
-import AboutSection from "./components/AboutSection";
-import ContactSection from "./components/ContactSection";
+import HomePage from "./pages/HomePage";
+import ProductsPage from "./pages/ProductsPage";
+import ProductDetailPage from "./pages/ProductDetailPage";
+import ContactPage from "./pages/ContactPage";
+import NotFoundPage from "./pages/NotFoundPage";
+import CrearProducto from "./pages/CrearProducto";
 import { useProductos } from "./hooks/useProductos";
 import "./App.css";
 
-function App() {
-  // Productos de la API (se piden una sola vez)
+function AppContent() {
+  const navigate = useNavigate();
   const { productos, cargando, error } = useProductos();
-  // Carrito: cada item es { ...producto, cantidad }
   const [carrito, setCarrito] = useState([]);
-  // Id del producto abierto en el detalle (null = no hay detalle abierto)
-  const [productoSeleccionadoId, setProductoSeleccionadoId] = useState(null);
-  // true = se muestra la vista del carrito
-  const [verCarrito, setVerCarrito] = useState(false);
-  // Sección a la que hay que bajar después de cambiar de vista: { id }
-  const [seccionDestino, setSeccionDestino] = useState(null);
 
-  // Cuando cambia la sección destino, React ya mostró la vista nueva:
-  // recién ahí existe el elemento y se puede hacer scroll
-  useEffect(() => {
-    if (!seccionDestino) return;
-    document.getElementById(seccionDestino.id)?.scrollIntoView();
-  }, [seccionDestino]);
-
-  // Total de unidades, para el contador del Navbar
   const cantidadEnCarrito = carrito.reduce((total, item) => total + item.cantidad, 0);
 
-  // Si el producto ya está en el carrito suma una unidad; si no, lo agrega
   function agregarAlCarrito(producto) {
     setCarrito((anterior) => {
       const existe = anterior.some((item) => item.id === producto.id);
-      if (!existe) {
-        return [...anterior, { ...producto, cantidad: 1 }];
-      }
+      if (!existe) return [...anterior, { ...producto, cantidad: 1 }];
       return anterior.map((item) =>
         item.id === producto.id ? { ...item, cantidad: item.cantidad + 1 } : item
       );
     });
   }
 
-  // Resta una unidad; si llega a 0, el producto sale del carrito
   function restarDelCarrito(id) {
     setCarrito((anterior) =>
-      anterior
-        .map((item) => (item.id === id ? { ...item, cantidad: item.cantidad - 1 } : item))
-        .filter((item) => item.cantidad > 0)
+      anterior.map((item) => (item.id === id ? { ...item, cantidad: item.cantidad - 1 } : item))
+      .filter((item) => item.cantidad > 0)
     );
   }
 
@@ -61,72 +43,41 @@ function App() {
     setCarrito([]);
   }
 
-  // Navbar: vuelve al catálogo (cerrando detalle o carrito) y baja a la sección
-  function irASeccion(id) {
-    setProductoSeleccionadoId(null);
-    setVerCarrito(false);
-    setSeccionDestino({ id });
-  }
-
-  function abrirCarrito() {
-    setProductoSeleccionadoId(null);
-    setVerCarrito(true);
-    setSeccionDestino({ id: "productos" });
-  }
-
-  // Renderizado condicional: carrito, detalle de un producto o catálogo
-  let vistaPrincipal;
-  if (verCarrito) {
-    vistaPrincipal = (
-      <Cart
-        items={carrito}
-        onSumar={agregarAlCarrito}
-        onRestar={restarDelCarrito}
-        onQuitar={quitarDelCarrito}
-        onVaciar={vaciarCarrito}
-        onSeguirComprando={() => setVerCarrito(false)}
-      />
-    );
-  } else if (productoSeleccionadoId !== null) {
-    vistaPrincipal = (
-      <ProductDetail
-        id={productoSeleccionadoId}
-        onAgregarAlCarrito={agregarAlCarrito}
-        onVolver={() => setProductoSeleccionadoId(null)}
-      />
-    );
-  } else {
-    vistaPrincipal = (
-      <Catalog
-        productos={productos}
-        cargando={cargando}
-        error={error}
-        onVerDetalle={(producto) => setProductoSeleccionadoId(producto.id)}
-        onAgregarAlCarrito={agregarAlCarrito}
-      />
-    );
-  }
-
   return (
     <div className="App" id="inicio">
-      <Navbar
-        contadorCarrito={cantidadEnCarrito}
-        onNavegar={irASeccion}
-        onVerCarrito={abrirCarrito}
-      />
+      <Navbar contadorCarrito={cantidadEnCarrito} />
 
       <main>
-        <section id="productos" className="seccion-productos">
-          {vistaPrincipal}
-        </section>
-
-        {/* En el detalle se ocultan Nosotros y Contacto */}
-        {productoSeleccionadoId === null && (
-          <>
-            <AboutSection />
-            <ContactSection />
-          </>
-        )}
+        <Routes>
+          {/* Ruta de Inicio */}
+          <Route path="/" element={<HomePage />} />
+          
+          {/* Ruta del Catálogo */}
+          <Route 
+            path="/productos" 
+            element={
+              <ProductsPage 
+                onVerDetalle={(producto) => navigate(`/productos/${producto.id}`)}
+                onAgregarAlCarrito={agregarAlCarrito}
+              />
+            } 
+          />
+          
+          {/* Ruta del Detalle de un Producto (usa :id dinámico) */}
+          <Route 
+            path="/productos/:id" 
+            element={<ProductDetailPage onAgregarAlCarrito={agregarAlCarrito} />} 
+          />
+          
+          {/* Ruta de Contacto */}
+          <Route path="/contacto" element={<ContactPage />} />
+          
+          {/* Ruta de Administración  */}
+          <Route path="/admin/crear-producto" element={<CrearProducto />} />
+          
+          {/* Ruta comodín (404) - SIEMPRE va al final */}
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
       </main>
 
       <Footer />
@@ -134,4 +85,11 @@ function App() {
   );
 }
 
-export default App;
+// El Router debe envolver toda la aplicación
+export default function App() {
+  return (
+    <Router>
+      <AppContent />
+    </Router>
+  );
+}

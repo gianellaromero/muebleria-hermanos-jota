@@ -638,3 +638,10 @@ button.boton-volver {
     cursor: wait;
     transform: none;
 }
+
+/* Estilo para el NavLink activo en el Navbar */
+.navegacion a.activo {
+  color: var(--naranja);
+  font-weight: bold;
+  border-bottom: 2px solid var(--naranja);
+}
