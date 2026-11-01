@@ -663,3 +663,21 @@ button.boton-volver {
     padding-top: 1.5rem;
     border-top: 1px solid var(--borde);
 }
+
+.boton-peligro {
+    background: var(--blanco);
+    color: #8a2f22;
+    box-shadow: inset 0 0 0 2px #8a2f22;
+}
+
+.boton-peligro:hover,
+.boton-peligro:focus {
+    background: #8a2f22;
+    color: var(--blanco);
+}
+
+.boton-peligro:disabled {
+    opacity: .6;
+    cursor: wait;
+    transform: none;
+}

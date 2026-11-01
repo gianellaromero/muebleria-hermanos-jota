@@ -1,17 +1,19 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { obtenerProducto } from '../services/productos';
+import { eliminarProducto, obtenerProducto } from '../services/productos';
 import { formatPrice } from '../utils/formatPrice';
 import { imagenProducto } from '../utils/imagenProducto';
 
 // Recibe solo el id y pide el producto a GET /api/productos/:id.
 // Con React Router, el id puede venir de useParams().
-export default function ProductDetail({ id, onAgregarAlCarrito, onVolver }) {
+export default function ProductDetail({ id, onAgregarAlCarrito, onVolver, onEliminado }) {
   const [producto, setProducto] = useState(null);
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState('');
   // Muestra el aviso "Producto añadido" durante unos segundos
   const [agregado, setAgregado] = useState(false);
+  const [eliminando, setEliminando] = useState(false);
+  const [errorEliminar, setErrorEliminar] = useState('');
 
   // Cada vez que cambia el id se pide el producto a la API
   useEffect(() => {
@@ -55,6 +57,21 @@ export default function ProductDetail({ id, onAgregarAlCarrito, onVolver }) {
   function handleAgregar() {
     onAgregarAlCarrito(producto);
     setAgregado(true);
+  }
+
+  // React → DELETE /api/productos/:id → MongoDB
+  async function handleEliminar() {
+    if (!window.confirm(`¿Seguro que querés eliminar "${producto.nombre}"? No se puede deshacer.`)) return;
+
+    setEliminando(true);
+    setErrorEliminar('');
+    try {
+      await eliminarProducto(producto.id);
+      onEliminado(producto);
+    } catch (err) {
+      setErrorEliminar(err.message);
+      setEliminando(false);
+    }
   }
 
   const botonVolver = (
@@ -111,7 +128,19 @@ export default function ProductDetail({ id, onAgregarAlCarrito, onVolver }) {
             <Link to={`/admin/editar-producto/${producto.id}`} className="boton boton-secundario">
               Editar
             </Link>
+            <button
+              type="button"
+              className="boton boton-peligro"
+              onClick={handleEliminar}
+              disabled={eliminando}
+            >
+              {eliminando ? 'Eliminando…' : 'Eliminar'}
+            </button>
           </div>
+
+          {errorEliminar && (
+            <p className="mensaje-error" role="alert">{errorEliminar}</p>
+          )}
         </section>
       </article>
     </>

@@ -41,6 +41,10 @@ export function crearProducto(producto) {
   });
 }
 
+export function eliminarProducto(id) {
+  return pedir(`${PRODUCTOS_URL}/${id}`, { method: 'DELETE' });
+}
+
 export function actualizarProducto(id, producto) {
   return pedir(`${PRODUCTOS_URL}/${id}`, {
     method: 'PUT',

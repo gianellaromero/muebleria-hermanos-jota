@@ -73,7 +73,12 @@ function AppContent() {
           {/* Ruta del Detalle de un Producto (usa :id dinámico) */}
           <Route 
             path="/productos/:id" 
-            element={<ProductDetailPage onAgregarAlCarrito={agregarAlCarrito} />} 
+            element={
+              <ProductDetailPage
+                onAgregarAlCarrito={agregarAlCarrito}
+                onEliminado={quitarDelCarrito}
+              />
+            }
           />
           
           {/* Ruta del Carrito */}
