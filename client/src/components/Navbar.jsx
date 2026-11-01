@@ -1,7 +1,6 @@
 import { NavLink } from 'react-router-dom';
 
 export default function Navbar({ contadorCarrito = 0 }) {
-  // Función para aplicar estilo cuando la ruta está activa
   const claseActiva = ({ isActive }) => (isActive ? 'activo' : '');
 
   return (

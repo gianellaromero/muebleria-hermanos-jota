@@ -639,7 +639,6 @@ button.boton-volver {
     transform: none;
 }
 
-
 /* Estilo para el NavLink activo en el Navbar */
 .navegacion a.activo {
   color: var(--naranja);

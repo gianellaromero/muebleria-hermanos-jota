@@ -1,28 +1,16 @@
 import { useState } from "react";
-import { BrowserRouter as Router, Routes, Route, useNavigate, useParams } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
-import Catalog from "./components/Catalog";
-import ProductDetail from "./components/ProductDetail";
+import HomePage from "./pages/HomePage";
+import ProductsPage from "./pages/ProductsPage";
+import ProductDetailPage from "./pages/ProductDetailPage";
+import ContactPage from "./pages/ContactPage";
+import NotFoundPage from "./pages/NotFoundPage";
+import CrearProducto from "./pages/CrearProducto";
 import Cart from "./components/Cart";
-import AboutSection from "./components/AboutSection";
-import ContactSection from "./components/ContactSection";
-import CrearProducto from "./pages/CrearProducto"; 
 import { useProductos } from "./hooks/useProductos";
 import "./App.css";
-
-// Wrapper para que ProductDetail pueda leer el ID de la URL
-function ProductDetailPage({ onAgregarAlCarrito }) {
-  const { id } = useParams();
-  const navigate = useNavigate();
-  return (
-    <ProductDetail 
-      id={id} 
-      onAgregarAlCarrito={onAgregarAlCarrito} 
-      onVolver={() => navigate("/productos")} 
-    />
-  );
-}
 
 function AppContent() {
   const navigate = useNavigate();
@@ -62,63 +50,51 @@ function AppContent() {
 
       <main>
         <Routes>
-          {/* Ruta de Inicio: muestra Catálogo + Nosotros + Contacto */}
-          <Route path="/" element={
-            <>
-              <section id="productos" className="seccion-productos">
-                <Catalog
-                  productos={productos}
-                  cargando={cargando}
-                  error={error}
-                  onVerDetalle={(producto) => navigate(`/productos/${producto.id}`)}
-                  onAgregarAlCarrito={agregarAlCarrito}
-                />
-              </section>
-              <AboutSection />
-              <ContactSection />
-            </>
-          } />
-
-          {/* Ruta exclusiva del Catálogo */}
-          <Route path="/productos" element={
-            <section id="productos" className="seccion-productos">
-              <Catalog
-                productos={productos}
-                cargando={cargando}
-                error={error}
+          {/* Ruta de Inicio */}
+          <Route path="/" element={<HomePage />} />
+          
+          {/* Ruta del Catálogo */}
+          <Route 
+            path="/productos" 
+            element={
+              <ProductsPage 
                 onVerDetalle={(producto) => navigate(`/productos/${producto.id}`)}
                 onAgregarAlCarrito={agregarAlCarrito}
               />
-            </section>
-          } />
-
-          {/* Ruta de Detalle de un Producto */}
-          <Route path="/productos/:id" element={
-            <section id="productos" className="seccion-productos">
-              <ProductDetailPage onAgregarAlCarrito={agregarAlCarrito} />
-            </section>
-          } />
-
+            } 
+          />
+          
+          {/* Ruta del Detalle de un Producto (usa :id dinámico) */}
+          <Route 
+            path="/productos/:id" 
+            element={<ProductDetailPage onAgregarAlCarrito={agregarAlCarrito} />} 
+          />
+          
           {/* Ruta del Carrito */}
-          <Route path="/carrito" element={
-            <section id="productos" className="seccion-productos">
-              <Cart
-                items={carrito}
-                onSumar={agregarAlCarrito}
-                onRestar={restarDelCarrito}
-                onQuitar={quitarDelCarrito}
-                onVaciar={vaciarCarrito}
-                onSeguirComprando={() => navigate("/productos")}
-              />
-            </section>
-          } />
+          <Route
+            path="/carrito"
+            element={
+              <section className="seccion-productos">
+                <Cart
+                  items={carrito}
+                  onSumar={agregarAlCarrito}
+                  onRestar={restarDelCarrito}
+                  onQuitar={quitarDelCarrito}
+                  onVaciar={vaciarCarrito}
+                  onSeguirComprando={() => navigate("/productos")}
+                />
+              </section>
+            }
+          />
 
           {/* Ruta de Contacto */}
-          <Route path="/contacto" element={<ContactSection />} />
-
-          {/* Ruta de Administración (Crear Producto) */}
+          <Route path="/contacto" element={<ContactPage />} />
+          
+          {/* Ruta de Administración  */}
           <Route path="/admin/crear-producto" element={<CrearProducto />} />
-
+          
+          {/* Ruta comodín (404) - SIEMPRE va al final */}
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </main>
 
