@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { formatPrice } from '../utils/formatPrice';
+import { imagenProducto } from '../utils/imagenProducto';
 
 export default function ProductCard({ producto, onVerDetalle, onAgregarAlCarrito }) {
   // Cambia el texto del botón a "✓ Agregado" por un momento
@@ -25,7 +26,7 @@ export default function ProductCard({ producto, onVerDetalle, onAgregarAlCarrito
           onClick={() => onVerDetalle(producto)}
           aria-label={`Ver detalle de ${producto.nombre}`}
         >
-          <img src={producto.imagen} alt={producto.alt} />
+          <img src={imagenProducto(producto)} alt={producto.nombre} />
         </button>
 
         <figcaption>{producto.categoria}</figcaption>
@@ -33,7 +34,7 @@ export default function ProductCard({ producto, onVerDetalle, onAgregarAlCarrito
 
       <div className="contenido-tarjeta">
         <h2>{producto.nombre}</h2>
-        <p>{producto.descripcionCorta}</p>
+        <p className="descripcion-tarjeta">{producto.descripcion}</p>
         <p className="precio">{formatPrice(producto.precio)}</p>
         <div className="acciones">
           <button className="boton" type="button" onClick={() => onVerDetalle(producto)}>Ver detalle</button>

@@ -55,6 +55,7 @@ test('envía el POST con los tipos correctos y vuelve al catálogo', async () =>
   renderPagina();
 
   escribir(/nombre/i, '  Mesa Ratona Delta  ');
+  escribir(/categoría/i, 'Mesas');
   escribir(/descripción/i, 'Mesa baja de madera');
   escribir(/precio/i, '185000');
   escribir(/stock/i, '4');
@@ -69,6 +70,7 @@ test('envía el POST con los tipos correctos y vuelve al catálogo', async () =>
   expect(opciones.method).toBe('POST');
   expect(JSON.parse(opciones.body)).toEqual({
     nombre: 'Mesa Ratona Delta',
+    categoria: 'Mesas',
     descripcion: 'Mesa baja de madera',
     precio: 185000,
     stock: 4,

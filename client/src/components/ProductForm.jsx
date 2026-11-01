@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-const FORMULARIO_VACIO = { nombre: '', descripcion: '', precio: '', stock: '', imagenUrl: '' };
+const FORMULARIO_VACIO = { nombre: '', categoria: '', descripcion: '', precio: '', stock: '', imagenUrl: '' };
 
 // Devuelve { campo: 'mensaje' } con los campos inválidos
 function validar({ nombre, precio, stock, imagenUrl }) {
@@ -58,6 +58,7 @@ export default function ProductForm({ valoresIniciales, textoBoton, onSubmit }) 
     // Se envían los tipos que espera el modelo Product de MongoDB
     const producto = {
       nombre: datos.nombre.trim(),
+      categoria: datos.categoria.trim(),
       descripcion: datos.descripcion.trim(),
       precio: Number(datos.precio),
       stock: datos.stock === '' ? 0 : Number(datos.stock),
@@ -90,6 +91,18 @@ export default function ProductForm({ valoresIniciales, textoBoton, onSubmit }) 
           required
         />
         {errores.nombre && <p className="mensaje-error">{errores.nombre}</p>}
+      </div>
+
+      <div>
+        <label htmlFor="categoria">Categoría</label>
+        <input
+          id="categoria"
+          name="categoria"
+          type="text"
+          placeholder="Ej: Mesas, Sillas, Sillones"
+          value={datos.categoria}
+          onChange={handleChange}
+        />
       </div>
 
       <div>

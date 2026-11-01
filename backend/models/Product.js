@@ -25,9 +25,16 @@ const productSchema = new mongoose.Schema({
     type: String,
     default: "",
     trim: true
+  },
+  categoria: {
+    type: String,
+    default: "",
+    trim: true
   }
   }, {
-  timestamps: true
+  timestamps: true,
+  // En el JSON se agrega "id" (el _id como texto), que es el que usa el front
+  toJSON: { virtuals: true, versionKey: false }
 });
 
 module.exports = mongoose.model("Product", productSchema);

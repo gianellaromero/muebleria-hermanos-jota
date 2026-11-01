@@ -645,3 +645,11 @@ button.boton-volver {
   font-weight: bold;
   border-bottom: 2px solid var(--naranja);
 }
+
+/* La descripción del producto es una sola: en la tarjeta se recorta a 3 líneas */
+.descripcion-tarjeta {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}

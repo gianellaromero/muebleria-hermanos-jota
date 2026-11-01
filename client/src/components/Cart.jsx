@@ -1,4 +1,5 @@
 import { formatPrice } from '../utils/formatPrice';
+import { imagenProducto } from '../utils/imagenProducto';
 
 export default function Cart({ items, onSumar, onRestar, onQuitar, onVaciar, onSeguirComprando }) {
   const total = items.reduce((suma, item) => suma + item.precio * item.cantidad, 0);
@@ -18,7 +19,7 @@ export default function Cart({ items, onSumar, onRestar, onQuitar, onVaciar, onS
         <div className="contenido-carrito">
           {items.map((item) => (
             <article key={item.id} className="fila-carrito">
-              <img src={item.imagen} alt={item.alt} />
+              <img src={imagenProducto(item)} alt={item.nombre} />
 
               <div className="fila-carrito-info">
                 <h2>{item.nombre}</h2>

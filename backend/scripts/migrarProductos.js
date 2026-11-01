@@ -12,7 +12,8 @@ async function migrarProductos() {
     descripcion: producto.descripcionLarga,
     precio: producto.precio,
     stock: 0,
-    imagenUrl: producto.imagen
+    imagenUrl: producto.imagen,
+    categoria: producto.categoria
   }));
 
   await Product.deleteMany({});

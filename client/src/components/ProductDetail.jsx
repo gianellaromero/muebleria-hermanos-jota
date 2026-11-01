@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { obtenerProducto } from '../services/productos';
 import { formatPrice } from '../utils/formatPrice';
+import { imagenProducto } from '../utils/imagenProducto';
 
 // Recibe solo el id y pide el producto a GET /api/productos/:id.
 // Con React Router, el id puede venir de useParams().
@@ -84,23 +85,12 @@ export default function ProductDetail({ id, onAgregarAlCarrito, onVolver }) {
       {botonVolver}
 
       <article className="producto-detalle">
-        <img src={producto.imagen} alt={producto.alt} width="600" height="450" />
+        <img src={imagenProducto(producto)} alt={producto.nombre} width="600" height="450" />
 
         <section>
           <p className="etiqueta">{producto.categoria}</p>
           <h1>{producto.nombre}</h1>
-          <p>{producto.descripcionLarga || producto.descripcionCorta}</p>
-
-          {producto.detallesFabricacion?.length > 0 && (
-            <>
-              <h2>Detalles de fabricación</h2>
-              <ul>
-                {producto.detallesFabricacion.map((detalle) => (
-                  <li key={detalle}>{detalle}</li>
-                ))}
-              </ul>
-            </>
-          )}
+          <p>{producto.descripcion}</p>
 
           <p className="precio">
             <strong>Precio:</strong> {formatPrice(producto.precio)}
