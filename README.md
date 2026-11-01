@@ -19,6 +19,18 @@
 
 ---
 
+## 🌐 Deploy
+
+| Parte | Plataforma | Enlace |
+|---|---|---|
+| Frontend | Vercel | https://muebleria-hermanos-jota-sigma.vercel.app |
+| API | Render | https://muebleria-hermanos-jota-api-amz5.onrender.com/api/productos |
+
+> [!NOTE]
+> La API usa el plan gratuito de Render: después de 15 minutos sin uso se apaga y el primer pedido puede tardar cerca de un minuto en responder.
+
+---
+
 ## 📖 Descripción
 
 **Mueblería Hermanos Jota** es una aplicación web de e-commerce desarrollada con una arquitectura separada entre **frontend** y **backend**.
@@ -293,7 +305,7 @@ Ejemplo de body para `POST` o `PUT`:
 | Sprint 4 | Integración Frontend / Backend | ✅ Completado |
 | Sprint 5 | MongoDB, React Router y alta de productos | ✅ Completado |
 | Sprint 6 | CRUD completo desde React | ✅ Completado |
-| Sprint 6 | Deploy (Render + Vercel) | ⏳ Pendiente |
+| Sprint 6 | Deploy (Render + Vercel) | ✅ Completado |
 
 ---
 
