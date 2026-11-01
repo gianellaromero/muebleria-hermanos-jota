@@ -40,3 +40,11 @@ export function crearProducto(producto) {
     body: JSON.stringify(producto),
   });
 }
+
+export function actualizarProducto(id, producto) {
+  return pedir(`${PRODUCTOS_URL}/${id}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(producto),
+  });
+}

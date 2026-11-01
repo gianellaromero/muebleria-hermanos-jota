@@ -8,6 +8,7 @@ import ProductDetailPage from "./pages/ProductDetailPage";
 import ContactPage from "./pages/ContactPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import CrearProducto from "./pages/CrearProducto";
+import EditarProducto from "./pages/EditarProducto";
 import Cart from "./components/Cart";
 import "./App.css";
 
@@ -40,6 +41,13 @@ function AppContent() {
 
   function vaciarCarrito() {
     setCarrito([]);
+  }
+
+  // Si se edita un producto que está en el carrito, se actualizan sus datos (precio, nombre...)
+  function actualizarEnCarrito(producto) {
+    setCarrito((anterior) =>
+      anterior.map((item) => (item.id === producto.id ? { ...producto, cantidad: item.cantidad } : item))
+    );
   }
 
   return (
@@ -90,6 +98,10 @@ function AppContent() {
           
           {/* Ruta de Administración  */}
           <Route path="/admin/crear-producto" element={<CrearProducto />} />
+          <Route
+            path="/admin/editar-producto/:id"
+            element={<EditarProducto onGuardado={actualizarEnCarrito} />}
+          />
           
           {/* Ruta comodín (404) - SIEMPRE va al final */}
           <Route path="*" element={<NotFoundPage />} />

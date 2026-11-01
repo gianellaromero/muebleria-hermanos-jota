@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { obtenerProducto } from '../services/productos';
 import { formatPrice } from '../utils/formatPrice';
 import { imagenProducto } from '../utils/imagenProducto';
@@ -105,6 +106,12 @@ export default function ProductDetail({ id, onAgregarAlCarrito, onVolver }) {
               ✓ {producto.nombre} se añadió al carrito.
             </p>
           )}
+
+          <div className="acciones-admin">
+            <Link to={`/admin/editar-producto/${producto.id}`} className="boton boton-secundario">
+              Editar
+            </Link>
+          </div>
         </section>
       </article>
     </>

@@ -653,3 +653,13 @@ button.boton-volver {
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
+
+/* ===== Sprint 6: acciones de administración en el detalle ===== */
+.acciones-admin {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--borde);
+}
