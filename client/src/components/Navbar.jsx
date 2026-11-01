@@ -21,6 +21,9 @@ export default function Navbar({ contadorCarrito = 0 }) {
             <NavLink to="/contacto" className={claseActiva}>Contacto</NavLink>
           </li>
           <li>
+            <NavLink to="/admin/crear-producto" className={claseActiva}>Nuevo producto</NavLink>
+          </li>
+          <li>
             <NavLink to="/carrito" className={claseActiva} style={{ display: 'inline-flex', alignItems: 'center', gap: '.35rem' }}>
               <span aria-hidden="true"></span> Carrito
               <span className="contador-carrito">{contadorCarrito}</span>
