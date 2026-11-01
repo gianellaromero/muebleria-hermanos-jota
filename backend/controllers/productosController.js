@@ -1,7 +1,6 @@
-
 const Product = require("../models/Product");
 
-//Crea un Error con código HTTP para que lo responda el errorHandler
+// Crea un Error con código HTTP para que lo responda el errorHandler
 function crearError(statusCode, mensaje) {
   const error = new Error(mensaje);
   error.statusCode = statusCode;
@@ -16,7 +15,7 @@ function mensajeDeValidacion(error) {
     .join(". ");
 }
 
-//GET /api/productos
+// GET /api/productos
 async function obtenerProductos(req, res, next) {
   try {
     const productos = await Product.find();
@@ -26,7 +25,7 @@ async function obtenerProductos(req, res, next) {
   }
 }
 
-//GET /api/productos/:id
+// GET /api/productos/:id
 async function obtenerProductoPorId(req, res, next) {
   try {
     const producto = await Product.findById(req.params.id);
@@ -45,7 +44,6 @@ async function obtenerProductoPorId(req, res, next) {
   }
 }
 
-
 // POST /api/productos
 async function crearProducto(req, res, next) {
   try {
@@ -60,8 +58,8 @@ async function crearProducto(req, res, next) {
     next(error);
   }
 }
- 
- // PUT /api/productos/:id
+
+// PUT /api/productos/:id
 async function actualizarProducto(req, res, next) {
   try {
     const productoActualizado = await Product.findByIdAndUpdate(
@@ -96,8 +94,7 @@ async function actualizarProducto(req, res, next) {
   }
 }
 
-
- // DELETE /api/productos/:id
+// DELETE /api/productos/:id
 async function eliminarProducto(req, res, next) {
   try {
     const productoEliminado = await Product.findByIdAndDelete(req.params.id);
@@ -119,8 +116,10 @@ async function eliminarProducto(req, res, next) {
   }
 }
 
-
-module.exports = { obtenerProductos, 
-  obtenerProductoPorId, 
-  crearProducto, 
-  actualizarProducto, eliminarProducto };
+module.exports = {
+  obtenerProductos,
+  obtenerProductoPorId,
+  crearProducto,
+  actualizarProducto,
+  eliminarProducto
+};
