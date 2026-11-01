@@ -1,0 +1,19 @@
+# Deploy del backend en Render (New → Blueprint, o se usa de guía para un Web Service manual).
+# Los valores secretos (sync: false) se cargan a mano en el panel de Render.
+services:
+  - type: web
+    name: muebleria-hermanos-jota-api
+    runtime: node
+    plan: free
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /
+    envVars:
+      - key: NODE_VERSION
+        value: 22
+      - key: MONGODB_URI
+        sync: false
+      # URL del frontend en Netlify (sin "/" al final). Si son varias, separarlas con coma.
+      - key: FRONTEND_URL
+        sync: false
