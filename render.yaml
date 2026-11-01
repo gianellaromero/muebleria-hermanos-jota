@@ -14,6 +14,6 @@ services:
         value: 22
       - key: MONGODB_URI
         sync: false
-      # URL del frontend en Netlify (sin "/" al final). Si son varias, separarlas con coma.
+      # URL del frontend en Vercel (sin "/" al final). Si son varias, separarlas con coma.
       - key: FRONTEND_URL
         sync: false

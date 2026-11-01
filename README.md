@@ -293,7 +293,7 @@ Ejemplo de body para `POST` o `PUT`:
 | Sprint 4 | Integración Frontend / Backend | ✅ Completado |
 | Sprint 5 | MongoDB, React Router y alta de productos | ✅ Completado |
 | Sprint 6 | CRUD completo desde React | ✅ Completado |
-| Sprint 6 | Deploy (Render + Vercel/Netlify) | ⏳ Pendiente |
+| Sprint 6 | Deploy (Render + Vercel) | ⏳ Pendiente |
 
 ---
 
