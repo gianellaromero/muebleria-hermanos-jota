@@ -4,15 +4,16 @@
 
 # 🪑 E-commerce Mueblería Hermanos Jota
 
-### Aplicación web Full Stack · React + Node.js + Express
+### Aplicación web Full Stack · React + Node.js + Express + MongoDB
 
 ![React](https://img.shields.io/badge/React-19.3-61DAFB?logo=react&logoColor=white)
+![React Router](https://img.shields.io/badge/React_Router-7-CA4245?logo=reactrouter&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-F7DF1E?logo=javascript&logoColor=black)
 ![Node.js](https://img.shields.io/badge/Node.js-Backend-339933?logo=node.js&logoColor=white)
 ![Express](https://img.shields.io/badge/Express-5.2-000000?logo=express&logoColor=white)
-![Status](https://img.shields.io/badge/Estado-Completado-success)
+![MongoDB](https://img.shields.io/badge/MongoDB-Mongoose_9-47A248?logo=mongodb&logoColor=white)
 
-**Proyecto académico desarrollado durante los Sprints 3 y 4.**
+**Proyecto académico desarrollado durante los Sprints 3 a 6.**
 
 </div>
 
@@ -22,7 +23,7 @@
 
 **Mueblería Hermanos Jota** es una aplicación web de e-commerce desarrollada con una arquitectura separada entre **frontend** y **backend**.
 
-El sistema permite consultar un catálogo de muebles, visualizar el detalle de cada producto y gestionar un carrito de compras. La interfaz fue desarrollada con **React**, mientras que el backend utiliza **Node.js + Express** para exponer la información de productos mediante una API REST.
+El sistema permite consultar un catálogo de muebles, ver el detalle de cada producto, gestionar un carrito de compras y administrar los productos (crear, editar y eliminar). La interfaz está hecha con **React** y **React Router**; el backend usa **Node.js + Express** y guarda los productos en **MongoDB Atlas** mediante **Mongoose**.
 
 ---
 
@@ -40,16 +41,15 @@ El sistema permite consultar un catálogo de muebles, visualizar el detalle de c
 
 ## ✨ Funcionalidades principales
 
-- 🛍️ Catálogo de productos
-- 🔎 Visualización del detalle de cada producto
-- 🛒 Carrito de compras
-- ➕ Agregado de productos al carrito
-- ➖ Modificación de cantidades
-- 🗑️ Eliminación de productos y vaciado del carrito
-- 🧭 Navegación entre las distintas secciones
-- 📡 Consumo de API mediante `fetch`
-- ⚠️ Manejo de estados de carga y error
-- 🔗 Integración entre frontend y backend
+- 🛍️ Catálogo de productos leído desde MongoDB
+- 🔎 Detalle de cada producto en su propia URL (`/productos/:id`)
+- ➕ Alta de productos desde un formulario controlado
+- ✏️ Edición de productos con los datos actuales precargados
+- 🗑️ Eliminación de productos con confirmación
+- 🛒 Carrito de compras: agregar, modificar cantidades, quitar y vaciar
+- 🧭 Navegación con React Router y página 404
+- ⚠️ Estados de carga y mensajes de error en español
+- 🔗 Integración entre frontend y backend con URL de la API centralizada
 
 ---
 
@@ -58,16 +58,19 @@ El sistema permite consultar un catálogo de muebles, visualizar el detalle de c
 ### Frontend
 
 - **React 19**
+- **React Router DOM 7**
 - **JavaScript**
 - **CSS**
 - Fetch API
-- React Scripts
+- React Scripts (Create React App)
 
 ### Backend
 
 - **Node.js**
-- **Express.js**
+- **Express.js 5**
+- **MongoDB Atlas + Mongoose**
 - **CORS**
+- **dotenv**
 - API REST
 
 ---
@@ -79,20 +82,30 @@ El proyecto está organizado en dos aplicaciones independientes:
 ```text
 muebleria-hermanos-jota/
 │
-├── client/                 # Aplicación frontend en React
+├── client/                     # Aplicación frontend en React
 │   ├── public/
-│   │   └── img/            # Imágenes y recursos visuales
+│   │   └── img/                # Imágenes y recursos visuales
 │   ├── src/
-│   │   ├── components/
-│   │   ├── App.js
+│   │   ├── components/         # Navbar, ProductCard, ProductForm, Cart...
+│   │   ├── pages/              # Una página por ruta
+│   │   ├── hooks/              # useProductos
+│   │   ├── services/           # productos.js: todas las llamadas a la API
+│   │   ├── utils/              # formatPrice, imagenProducto
+│   │   ├── App.js              # Rutas y estado del carrito
 │   │   └── App.css
+│   ├── .env.example
 │   └── package.json
 │
-├── backend/                # API REST en Node.js + Express
-│   ├── data/
-│   ├── middlewares/
+├── backend/                    # API REST en Node.js + Express
+│   ├── config/db.js            # Conexión a MongoDB
+│   ├── models/Product.js       # Esquema de Mongoose
+│   ├── controllers/            # Lógica de cada endpoint
 │   ├── routes/
+│   ├── middlewares/            # logger, notFound, errorHandler
+│   ├── scripts/                # Migración de los productos iniciales
+│   ├── data/productos.js       # Datos originales (solo los usa la migración)
 │   ├── server.js
+│   ├── .env.example
 │   └── package.json
 │
 └── README.md
@@ -104,7 +117,7 @@ muebleria-hermanos-jota/
 flowchart LR
     A[Usuario] --> B[Frontend React]
     B -->|HTTP / fetch| C[API Node.js + Express]
-    C --> D[Datos de productos]
+    C -->|Mongoose| D[(MongoDB Atlas)]
     D --> C
     C -->|JSON| B
     B --> A
@@ -116,10 +129,8 @@ flowchart LR
 
 ### Requisitos previos
 
-Es necesario contar con:
-
-- **Node.js**
-- **npm**
+- **Node.js** y **npm**
+- Una base de datos en **MongoDB Atlas** (o un MongoDB local)
 
 ### 1. Clonar el repositorio
 
@@ -128,27 +139,42 @@ git clone https://github.com/gianellaromero/muebleria-hermanos-jota.git
 cd muebleria-hermanos-jota
 ```
 
-### 2. Iniciar el backend
+### 2. Configurar las variables de entorno
+
+Cada carpeta tiene un `.env.example`. Hay que copiarlo como `.env` y completar los valores. Los archivos `.env` no se suben a GitHub.
+
+**`backend/.env`**
+
+| Variable | Descripción | Ejemplo |
+|---|---|---|
+| `PORT` | Puerto de la API | `3001` |
+| `MONGODB_URI` | Cadena de conexión de MongoDB Atlas | `mongodb+srv://usuario:clave@cluster.mongodb.net/hermanosjota` |
+| `FRONTEND_URL` | Frontends habilitados por CORS (separados por coma) | `http://localhost:3000` |
+
+**`client/.env`**
+
+| Variable | Descripción | Ejemplo |
+|---|---|---|
+| `REACT_APP_API_URL` | URL base de la API, sin `/` al final | `http://localhost:3001` |
+
+> [!NOTE]
+> Create React App solo lee las variables que empiezan con `REACT_APP_`, y las lee al iniciar: después de cambiarlas hay que reiniciar `npm start`.
+
+### 3. Iniciar el backend
 
 ```bash
 cd backend
 npm install
-npm start
+npm run migrar:productos   # solo la primera vez: carga los productos iniciales en MongoDB
+npm run dev                # o npm start
 ```
 
-El backend se ejecuta en:
+> [!WARNING]
+> `npm run migrar:productos` borra los productos de la colección antes de cargar los iniciales.
 
-```text
-http://localhost:3001
-```
+La API queda en `http://localhost:3001` y los productos en `http://localhost:3001/api/productos`.
 
-Endpoint principal de productos:
-
-```text
-http://localhost:3001/api/productos
-```
-
-### 3. Iniciar el frontend
+### 4. Iniciar el frontend
 
 En una nueva terminal:
 
@@ -158,57 +184,92 @@ npm install
 npm start
 ```
 
-El frontend se ejecuta en:
-
-```text
-http://localhost:3000
-```
+El frontend se ejecuta en `http://localhost:3000`.
 
 > [!IMPORTANT]
-> El backend debe estar activo para que el frontend pueda obtener la información de los productos desde la API.
+> El backend debe estar activo y conectado a MongoDB para que el frontend pueda obtener los productos.
+
+### 5. Correr los tests del frontend
+
+```bash
+cd client
+npm test
+```
 
 ---
 
-## 🔗 Integración Frontend / Backend
+## 🔗 API REST
 
-El frontend realiza solicitudes HTTP al backend mediante `fetch`.
+Base: `/api/productos`
 
-La API expone los productos a través del endpoint:
+| Método | Ruta | Descripción | Respuesta OK |
+|---|---|---|---|
+| `GET` | `/api/productos` | Lista todos los productos | `200` |
+| `GET` | `/api/productos/:id` | Devuelve un producto | `200` |
+| `POST` | `/api/productos` | Crea un producto | `201` |
+| `PUT` | `/api/productos/:id` | Actualiza un producto | `200` |
+| `DELETE` | `/api/productos/:id` | Elimina un producto | `200` |
 
-```http
-GET /api/productos
+**Errores:** todas las respuestas de error tienen el formato `{ "error": "mensaje" }`.
+
+| Código | Cuándo |
+|---|---|
+| `400` | El id no es un ObjectId válido, o faltan datos / hay datos inválidos en el body |
+| `404` | El producto no existe, o la ruta no existe |
+| `500` | Error interno del servidor |
+
+### Modelo `Product`
+
+| Campo | Tipo | Obligatorio | Valor por defecto |
+|---|---|---|---|
+| `nombre` | String | ✅ | — |
+| `precio` | Number (≥ 0) | ✅ | — |
+| `descripcion` | String | | `""` |
+| `stock` | Number (≥ 0) | | `0` |
+| `imagenUrl` | String | | `""` |
+| `categoria` | String | | `""` |
+
+Además, MongoDB agrega `_id`, `createdAt` y `updatedAt`. En las respuestas JSON también se incluye `id` (el mismo `_id` como texto), que es el que usa el frontend.
+
+Ejemplo de body para `POST` o `PUT`:
+
+```json
+{
+  "nombre": "Mesa Ratona Delta",
+  "categoria": "Mesas",
+  "descripcion": "Mesa baja de madera",
+  "precio": 185000,
+  "stock": 4,
+  "imagenUrl": "/img/mesa-de-centro-araucaria.png"
+}
 ```
 
-Express procesa la solicitud y devuelve los datos en formato JSON. React utiliza esa respuesta para renderizar dinámicamente el catálogo y las vistas asociadas a los productos.
+---
+
+## 🧭 Rutas del frontend
+
+| Ruta | Página |
+|---|---|
+| `/` | Inicio |
+| `/productos` | Catálogo |
+| `/productos/:id` | Detalle del producto (con botones Editar y Eliminar) |
+| `/carrito` | Carrito de compras |
+| `/contacto` | Formulario de contacto |
+| `/admin/crear-producto` | Alta de producto |
+| `/admin/editar-producto/:id` | Edición de producto |
+| `*` | Página 404 |
 
 ---
 
 ## 💡 Decisiones de desarrollo
 
-La separación entre **frontend y backend** permite mantener responsabilidades claras dentro del proyecto.
-
-- **React** se utiliza para construir la interfaz mediante componentes reutilizables y manejar los diferentes estados de la aplicación.
-- **Node.js + Express** conforman la API encargada de centralizar y entregar los datos de productos.
-- **CORS** permite la comunicación entre el frontend, ejecutado en el puerto `3000`, y el backend, ejecutado en el puerto `3001`.
-- La organización por componentes facilita el mantenimiento del catálogo, el detalle de productos, la navegación, el formulario de contacto y el carrito.
-
----
-
-## 📂 Componentes principales del frontend
-
-Entre los componentes utilizados se encuentran:
-
-```text
-Cart.jsx
-ContactForm.jsx
-Footer.jsx
-Navbar.jsx
-ProductCard.jsx
-ProductDetail.jsx
-ProductList.jsx
-```
-
-Esto permite mantener la interfaz dividida en responsabilidades específicas y reutilizables.
+- **Separación frontend / backend:** cada aplicación tiene sus dependencias y su `.env`, lo que permite desplegarlas por separado.
+- **Controllers y errores centralizados:** las rutas solo indican qué función atiende cada pedido; los errores se pasan con `next()` a un único `errorHandler` que responde siempre con el mismo formato.
+- **Un solo nombre para cada campo:** el modelo de Mongoose es la referencia. El frontend usa los mismos campos (`id`, `descripcion`, `imagenUrl`, `categoria`) en todos los componentes.
+- **URL de la API centralizada:** todas las llamadas pasan por `client/src/services/productos.js`, que lee `REACT_APP_API_URL`. Para el deploy solo hay que cambiar esa variable.
+- **Formulario reutilizable:** `ProductForm` se usa tanto para crear como para editar.
+- **Catálogo siempre actualizado:** la lista se vuelve a pedir cada vez que se entra a `/productos`, así se ven los cambios de crear, editar o eliminar.
+- **CORS:** solo se aceptan pedidos de los orígenes listados en `FRONTEND_URL`.
 
 ---
 
@@ -230,7 +291,9 @@ Esto permite mantener la interfaz dividida en responsabilidades específicas y r
 |---|---|---|
 | Sprint 3 | Desarrollo de API backend | ✅ Completado |
 | Sprint 4 | Integración Frontend / Backend | ✅ Completado |
-| Entrega final | Integración y ajustes finales | ✅ Completado |
+| Sprint 5 | MongoDB, React Router y alta de productos | ✅ Completado |
+| Sprint 6 | CRUD completo desde React | ✅ Completado |
+| Sprint 6 | Deploy (Render + Vercel/Netlify) | ⏳ Pendiente |
 
 ---
 
@@ -238,10 +301,11 @@ Esto permite mantener la interfaz dividida en responsabilidades específicas y r
 
 Proyecto desarrollado con fines académicos dentro de la formación **Full Stack – Santander / ITBA**, aplicando conceptos de:
 
-- Desarrollo web con React
+- Desarrollo web con React y React Router
 - Arquitectura cliente-servidor
-- APIs REST
+- APIs REST y CRUD
 - Node.js y Express
+- MongoDB y Mongoose
 - Integración frontend-backend
 - Organización de código mediante componentes
 
@@ -251,7 +315,7 @@ Proyecto desarrollado con fines académicos dentro de la formación **Full Stack
 
 ### 🪑 Mueblería Hermanos Jota
 
-**React · JavaScript · Node.js · Express**
+**React · JavaScript · Node.js · Express · MongoDB**
 
 Proyecto académico · 2026
 
