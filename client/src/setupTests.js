@@ -10,3 +10,6 @@ import { TextEncoder, TextDecoder } from 'util';
 
 global.TextEncoder = TextEncoder;
 global.TextDecoder = TextDecoder;
+
+// jsdom no implementa window.scrollTo (lo usa ScrollToTop en cada cambio de ruta)
+window.scrollTo = jest.fn();

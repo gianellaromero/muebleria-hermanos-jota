@@ -37,10 +37,10 @@ export default function ProductDetail({ id, onAgregarAlCarrito, onVolver, onElim
     };
   }, [id]);
 
-  // Al mostrar un producto: subir al inicio y actualizar el título de la pestaña
+  // Al mostrar un producto se actualiza el título de la pestaña
+  // (el scroll al inicio lo hace ScrollToTop en cada cambio de ruta)
   useEffect(() => {
     if (!producto) return;
-    window.scrollTo(0, 0);
     document.title = `Mueblería Hermanos Jota | ${producto.nombre}`;
     return () => {
       document.title = 'Mueblería Hermanos Jota';

@@ -27,7 +27,6 @@ function renderDetalle(onEliminado = jest.fn()) {
 
 beforeEach(() => {
   global.fetch = jest.fn();
-  window.scrollTo = jest.fn();
 });
 
 test('muestra los datos del producto y el link para editarlo', async () => {
