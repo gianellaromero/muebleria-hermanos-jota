@@ -1,7 +1,7 @@
 import ProductList from './ProductList';
 
 // Catálogo: título + estados de carga, error y lista vacía.
-// Los productos llegan por props (los pide el hook useProductos en App).
+// Los productos llegan por props (los pide el hook useProductos en ProductsPage).
 export default function Catalog({ productos, cargando, error, onVerDetalle, onAgregarAlCarrito }) {
   let contenido;
   if (cargando) {

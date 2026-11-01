@@ -9,12 +9,10 @@ import ContactPage from "./pages/ContactPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import CrearProducto from "./pages/CrearProducto";
 import Cart from "./components/Cart";
-import { useProductos } from "./hooks/useProductos";
 import "./App.css";
 
 function AppContent() {
   const navigate = useNavigate();
-  const { productos, cargando, error } = useProductos();
   const [carrito, setCarrito] = useState([]);
 
   const cantidadEnCarrito = carrito.reduce((total, item) => total + item.cantidad, 0);

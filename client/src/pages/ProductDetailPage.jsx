@@ -6,10 +6,12 @@ export default function ProductDetailPage({ onAgregarAlCarrito }) {
   const navigate = useNavigate();
 
   return (
-    <ProductDetail
-      id={id}
-      onAgregarAlCarrito={onAgregarAlCarrito}
-      onVolver={() => navigate('/productos')} // Vuelve al catálogo programáticamente
-    />
+    <section className="seccion-productos">
+      <ProductDetail
+        id={id}
+        onAgregarAlCarrito={onAgregarAlCarrito}
+        onVolver={() => navigate('/productos')} // Vuelve al catálogo programáticamente
+      />
+    </section>
   );
 }

@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { obtenerProductos } from '../services/productos';
 
-// Pide los productos a GET /api/productos una sola vez y devuelve
-// { productos, cargando, error }. Se usa en App para que el catálogo
-// no se vuelva a pedir cada vez que se cierra el detalle o el carrito.
+// Pide los productos a GET /api/productos y devuelve { productos, cargando, error }.
+// Lo usa ProductsPage: se vuelve a pedir cada vez que se entra al catálogo,
+// así se ven los productos recién creados, editados o eliminados.
 export function useProductos() {
   const [productos, setProductos] = useState([]);
   const [cargando, setCargando] = useState(true);
