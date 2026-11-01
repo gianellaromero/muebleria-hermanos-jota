@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const productSchema = new mongoose.Schema({
   nombre: {
     type: String,
-    required: true,
+    required: [true, "El nombre es obligatorio"],
     trim: true
   },
   descripcion: {
@@ -13,13 +13,13 @@ const productSchema = new mongoose.Schema({
   },
   precio: {
     type: Number,
-    required: true,
-    min: 0
+    required: [true, "El precio es obligatorio"],
+    min: [0, "El precio no puede ser negativo"]
   },
   stock: {
     type: Number,
     default: 0,
-    min: 0
+    min: [0, "El stock no puede ser negativo"]
   },
   imagenUrl: {
     type: String,

@@ -8,6 +8,14 @@ function crearError(statusCode, mensaje) {
   return error;
 }
 
+// Junta los mensajes de cada campo inválido (los definidos en el modelo)
+// en vez de devolver el texto técnico "Product validation failed: ..."
+function mensajeDeValidacion(error) {
+  return Object.values(error.errors)
+    .map((detalle) => (detalle.name === "CastError" ? `El campo ${detalle.path} tiene un valor inválido` : detalle.message))
+    .join(". ");
+}
+
 //GET /api/productos
 async function obtenerProductos(req, res, next) {
   try {
@@ -46,7 +54,7 @@ async function crearProducto(req, res, next) {
     res.status(201).json(nuevoProducto);
   } catch (error) {
     if (error.name === "ValidationError") {
-      return next(crearError(400, error.message));
+      return next(crearError(400, mensajeDeValidacion(error)));
     }
 
     next(error);
@@ -71,12 +79,17 @@ async function actualizarProducto(req, res, next) {
 
     res.json(productoActualizado);
   } catch (error) {
-    if (error.name === "CastError") {
+    // El CastError puede venir del id de la URL o de un campo del body (ej: precio: "abc")
+    if (error.name === "CastError" && error.path === "_id") {
       return next(crearError(400, "ID de producto inválido"));
     }
 
+    if (error.name === "CastError") {
+      return next(crearError(400, `El campo ${error.path} tiene un valor inválido`));
+    }
+
     if (error.name === "ValidationError") {
-      return next(crearError(400, error.message));
+      return next(crearError(400, mensajeDeValidacion(error)));
     }
 
     next(error);
