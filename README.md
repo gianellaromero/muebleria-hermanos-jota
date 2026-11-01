@@ -160,7 +160,7 @@ Cada carpeta tiene un `.env.example`. Hay que copiarlo como `.env` y completar l
 | Variable | Descripción | Ejemplo |
 |---|---|---|
 | `PORT` | Puerto de la API | `3001` |
-| `MONGODB_URI` | Cadena de conexión de MongoDB Atlas (se copia desde Atlas → Connect → Drivers) | `mongodb+srv://<usuario>:<contraseña>@<cluster>/hermanosjota` |
+| `MONGODB_URI` | Cadena de conexión de MongoDB Atlas (se copia desde Atlas → Connect → Drivers) | `mongodb+srv://<usuario>:<contraseña>@<cluster>/muebleriaJota` |
 | `FRONTEND_URL` | Frontends habilitados por CORS (separados por coma) | `http://localhost:3000` |
 
 **`client/.env`**
@@ -171,6 +171,22 @@ Cada carpeta tiene un `.env.example`. Hay que copiarlo como `.env` y completar l
 
 > [!NOTE]
 > Create React App solo lee las variables que empiezan con `REACT_APP_`, y las lee al iniciar: después de cambiarlas hay que reiniciar `npm start`.
+
+#### Variables en producción
+
+En el deploy, las mismas variables se cargan en el panel de cada plataforma (no se usan archivos `.env`):
+
+| Plataforma | Dónde | Variable | Valor |
+|---|---|---|---|
+| Render (backend) | Environment → Environment Variables | `MONGODB_URI` | La cadena de conexión de Atlas |
+| | | `FRONTEND_URL` | `https://muebleria-hermanos-jota-sigma.vercel.app` |
+| | | `NODE_VERSION` | `22` |
+| Vercel (frontend) | Settings → Environment Variables | `REACT_APP_API_URL` | `https://muebleria-hermanos-jota-api-amz5.onrender.com` |
+
+- En Render no hace falta `PORT`: la plataforma asigna el puerto sola.
+- En Atlas, **Network Access** tiene que permitir `0.0.0.0/0`, porque Render no tiene una IP fija.
+- Configuración de cada servicio: Render usa Root Directory `backend`, `npm install` y `npm start` (ver `render.yaml`); Vercel usa Root Directory `client` y el preset Create React App (`client/vercel.json` evita el 404 al recargar las rutas).
+- Si se cambia `REACT_APP_API_URL` en Vercel, hay que hacer **Redeploy**, porque React la incluye al compilar.
 
 ### 3. Iniciar el backend
 
