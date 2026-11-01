@@ -14,7 +14,8 @@ const errorHandler = require("./middlewares/errorHandler");
 // (separados por coma). En desarrollo, React corre en http://localhost:3000
 const origenesPermitidos = (process.env.FRONTEND_URL || "http://localhost:3000")
   .split(",")
-  .map((url) => url.trim());
+  // Se saca la "/" final: el navegador manda el origen sin ella y si no, CORS lo rechaza
+  .map((url) => url.trim().replace(/\/+$/, ""));
 
 app.use(cors({ origin: origenesPermitidos }));
 // middleware básico
