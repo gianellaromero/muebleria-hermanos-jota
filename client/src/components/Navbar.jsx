@@ -8,7 +8,7 @@ export default function Navbar({ contadorCarrito = 0 }) {
       <NavLink to="/" aria-label="Ir al inicio" className={claseActiva}>
         <img src="/img/logo.svg" alt="Logo de Mueblería Hermanos Jota" width="180" height="60" />
       </NavLink>
-      
+
       <nav aria-label="Navegación principal">
         <ul className="navegacion">
           <li>

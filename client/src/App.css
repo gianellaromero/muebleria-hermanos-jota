@@ -403,7 +403,7 @@ h1,h2,h3 { line-height:1.1; }
 .boton:focus {
     background: var(--marron);
     transform: translateY(-3px);
-    box-shadow: 0 6px 15px rgba(86, 53, 34, 0.25); 
+    box-shadow: 0 6px 15px rgba(86, 53, 34, 0.25);
 }
 .tarjeta-mueble:hover {
     transform: translateY(-6px);
@@ -427,7 +427,7 @@ h1,h2,h3 { line-height:1.1; }
     animation: fadeInUp 0.6s ease-out forwards;
 }
 
-  
+
 .boton-volver {
     display: inline-flex;
     align-items: center;
