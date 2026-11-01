@@ -148,7 +148,7 @@ Cada carpeta tiene un `.env.example`. Hay que copiarlo como `.env` y completar l
 | Variable | Descripción | Ejemplo |
 |---|---|---|
 | `PORT` | Puerto de la API | `3001` |
-| `MONGODB_URI` | Cadena de conexión de MongoDB Atlas | `mongodb+srv://usuario:clave@cluster.mongodb.net/hermanosjota` |
+| `MONGODB_URI` | Cadena de conexión de MongoDB Atlas (se copia desde Atlas → Connect → Drivers) | `mongodb+srv://<usuario>:<contraseña>@<cluster>/hermanosjota` |
 | `FRONTEND_URL` | Frontends habilitados por CORS (separados por coma) | `http://localhost:3000` |
 
 **`client/.env`**
