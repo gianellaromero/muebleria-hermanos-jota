@@ -7,6 +7,7 @@ const app = express();
 const cors = require('cors');
 const productosRoutes = require("./routes/productos");
 const authRoutes = require("./routes/authRoutes");
+const pedidoRoutes = require("./routes/pedidoRoutes");
 const logger = require("./middlewares/logger");
 const notFound = require("./middlewares/notFound");
 const errorHandler = require("./middlewares/errorHandler");
@@ -29,6 +30,8 @@ app.use(logger);
 app.use("/api/productos", productosRoutes);
 
 app.use("/api/auth", authRoutes);
+
+app.use("/api/pedidos", pedidoRoutes);
 
 // ruta raiz 
 app.get("/", (req, res) => {
