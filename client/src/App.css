@@ -681,3 +681,26 @@ button.boton-volver {
     cursor: wait;
     transform: none;
 }
+
+/* Perfil del usuario */
+.datos-perfil {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: .75rem 1.5rem;
+    max-width: 600px;
+    margin: 0 auto 2rem;
+    padding: 1.5rem;
+    background: var(--blanco);
+    border: 1px solid var(--borde);
+    font-family: Arial, sans-serif;
+}
+
+.datos-perfil dt {
+    color: var(--gris);
+    font-weight: bold;
+}
+
+.datos-perfil dd {
+    margin: 0;
+    overflow-wrap: anywhere;
+}
