@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-route
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import ScrollToTop from "./components/ScrollToTop";
+import ProtectedRoute from "./components/ProtectedRoute";
+import { AuthProvider } from "./context/AuthContext";
 import HomePage from "./pages/HomePage";
 import ProductsPage from "./pages/ProductsPage";
 import ProductDetailPage from "./pages/ProductDetailPage";
@@ -11,6 +13,8 @@ import ContactPage from "./pages/ContactPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import CrearProducto from "./pages/CrearProducto";
 import EditarProducto from "./pages/EditarProducto";
+import Perfil from "./pages/Perfil";
+import MisPedidos from "./pages/MisPedidos";
 import "./App.css";
 
 function AppContent() {
@@ -107,6 +111,24 @@ function AppContent() {
             element={<EditarProducto onGuardado={actualizarEnCarrito} />}
           />
 
+          {/* Rutas privadas: sin sesión iniciada redirigen a /login */}
+          <Route
+            path="/perfil"
+            element={
+              <ProtectedRoute>
+                <Perfil />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/mis-pedidos"
+            element={
+              <ProtectedRoute>
+                <MisPedidos />
+              </ProtectedRoute>
+            }
+          />
+
           {/* Ruta comodín (404) - SIEMPRE va al final */}
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
@@ -117,12 +139,14 @@ function AppContent() {
   );
 }
 
-// El Router debe envolver toda la aplicación
+// El Router debe envolver toda la aplicación, y el AuthProvider todo lo que use la sesión
 export default function App() {
   return (
     <Router>
-      <ScrollToTop />
-      <AppContent />
+      <AuthProvider>
+        <ScrollToTop />
+        <AppContent />
+      </AuthProvider>
     </Router>
   );
 }
